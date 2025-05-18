@@ -6,10 +6,10 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['onChange']);
 
 const handleChange = (event) => {
-  emit('update:modelValue', event.target.value);
+  emit('onChange', event.target.value);
 };
 </script>
 

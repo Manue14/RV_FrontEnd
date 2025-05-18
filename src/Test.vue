@@ -76,13 +76,13 @@
   <div>
     <Combox
       :data_list="familias"
-      @update:modelValue="familiaSeleccionada = $event">
+      @on-change="(familia) => familiaSeleccionada = familia">
     </Combox>
   </div>
   <div>
     <Combox
       :data_list="provincias"
-      @update:modelValue="provinciaSeleccionada = $event">
+      @on-change="(provincia) => provinciaSeleccionada = provincia">
     </Combox>
   </div>
   <div>
