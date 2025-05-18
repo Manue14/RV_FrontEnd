@@ -1,7 +1,9 @@
 <script setup>
   import { ref, onMounted } from 'vue';
+  import { getApiService } from './api/service';
   import Combox from "@/components/Combox.vue";
 
+  const apiService = getApiService();
   const familias = ref([]);
   const provincias = ref([]);
   const familiaSeleccionada = ref(null);
@@ -69,6 +71,7 @@
   onMounted(() => {
     getFamilias();
     getProvincias();
+    provincias.value = apiService.getProvincias();
   });
 </script>
 
