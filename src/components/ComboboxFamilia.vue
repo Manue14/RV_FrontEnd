@@ -6,10 +6,10 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['onChange']);
+const emit = defineEmits(['update:modelValue']);
 
 const handleChange = (event) => {
-  emit('onChange', event.target.value);
+  emit('update:modelValue', event.target.value);
 };
 </script>
 
@@ -17,6 +17,10 @@ const handleChange = (event) => {
   <select @change="handleChange">
     <option value="">Seleccione una opción</option>
     <option v-for="(value, key) in data_list"
-            :key="value" :value="value">{{value}}</option>
+            :key="key" :value="key">{{value}}</option>
   </select>
 </template>
+
+<style scoped>
+
+</style>

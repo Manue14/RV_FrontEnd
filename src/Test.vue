@@ -1,88 +1,60 @@
 <script setup>
-  import { ref, onMounted } from 'vue';
+import {ref, onMounted, watchEffect} from 'vue';
+  import { getApiService } from './api/service';
   import Combox from "@/components/Combox.vue";
+  import ComboboxFamilia from "@/components/ComboboxFamilia.vue";
 
+  const apiService = getApiService();
+  const tiendas = ref([]);
+  const tiendaSeleccionada = ref(null);
+  const tiendaSeleccionadaState = ref(null)
   const familias = ref([]);
-  const provincias = ref([]);
   const familiaSeleccionada = ref(null);
-  const provinciaSeleccionada = ref(null);
-
-  async function getFamilias() {
-    const url = "http://127.0.0.1:5000/familias";
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`)
-      }
-      const json = await response.json();
-      familias.value = json;
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
-  async function getProvincias() {
-    const url = "http://127.0.0.1:5000/provincias";
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`)
-      }
-      const json = await response.json();
-      provincias.value = json;
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
 
   const enviarDatos = async () => {
-    if (!familiaSeleccionada.value || !provinciaSeleccionada.value) {
-      alert('Por favor, seleccione tanto la familia como la provincia');
+    if (!tiendaSeleccionada.value || !tiendaSeleccionada.value) {
+      alert('Por favor, seleccione tanto la tienda como la provincia');
       return;
     }
-
-    const datos = {
-      familia: familiaSeleccionada.value,
-      provincia: provinciaSeleccionada.value
-    };
-
-    try {
-      const response = await fetch('http://127.0.0.1:5000/predict', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(datos)
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al enviar los datos');
-      }
-
-      alert('Datos enviados correctamente');
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al enviar los datos');
-    }
+    await apiService.predict(provinciaSeleccionada.value, tiendaSeleccionada.value);
   };
 
-  onMounted(() => {
-    getFamilias();
-    getProvincias();
+  const handleTiendaChange = async (event) => {
+    tiendaSeleccionadaState.value = await apiService.getTienda(event);
+    tiendaSeleccionada.value = event;
+  }
+
+  const handleFamiliaChange = async (event) => {
+    familiaSeleccionada.value = event;
+  }
+
+  watchEffect(() => {
+    console.log("Tienda: ", tiendaSeleccionada.value);
+    console.log("Familia: ", familiaSeleccionada.value);
+  })
+
+
+  onMounted(async () => {
+    tiendas.value = await apiService.getTiendas();
   });
 </script>
 
 <template>
   <div>
     <Combox
-      :data_list="familias"
-      @on-change="(familia) => familiaSeleccionada = familia">
+      :data_list="tiendas"
+      @update:modelValue="handleTiendaChange">
     </Combox>
   </div>
-  <div>
-    <Combox
-      :data_list="provincias"
-      @on-change="(provincia) => provinciaSeleccionada = provincia">
+  <div v-if="tiendaSeleccionadaState">
+    <ComboboxFamilia
+      :data_list="tiendaSeleccionadaState.productos"
+      @update:modelValue="handleFamiliaChange">
+    </ComboboxFamilia>
+    <div>{{ tiendaSeleccionadaState.provincia }}</div>
+    <div>{{ tiendaSeleccionadaState.codigo_postal }}</div>
+      :data_list="familias"
+      @on-change="(familia) => familiaSeleccionada = familia">
     </Combox>
   </div>
   <div>
