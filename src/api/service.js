@@ -6,20 +6,26 @@ class ApiService {
         this.clientName = clientName;
     }
 
-    async getProvincias() {
-        const response = await this.connectorInstance.get("/provincias")
+    async getTiendas() {
+        const response = await this.connectorInstance.get("/tiendas")
             .catch((error) => {
                 console.log(error)
             })
         return response.data;
     }
 
-    async getFamilias() {
-        const response = await this.connectorInstance.get("/familias")
-            .catch((error) => {
-                console.log(error)
+    async postTienda(idTienda) {
+        this.connectorInstance.get("/datos_tienda", {
+            params: { idTienda }
+        })
+            .then(function (response) {
+                console.log("Datos de tienda obtenidos");
+                console.log(response.data);
+                return response.data.productos;
             })
-        return response.data;
+            .catch(function (error) {
+                console.log(error);
+            })
     }
 
     async predict(provincia, familia) {

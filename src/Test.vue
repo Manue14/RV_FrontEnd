@@ -1,39 +1,50 @@
 <script setup>
-  import { ref, onMounted } from 'vue';
+import {ref, onMounted, watchEffect} from 'vue';
   import { getApiService } from './api/service';
   import Combox from "@/components/Combox.vue";
+  import ComboboxFamilia from "@/components/ComboboxFamilia.vue";
 
   const apiService = getApiService();
+  const tiendas = ref([]);
+  const tiendaSeleccionada = ref(null);
   const familias = ref([]);
-  const provincias = ref([]);
   const familiaSeleccionada = ref(null);
-  const provinciaSeleccionada = ref(null);
+  const tienda_state = ref(null)
 
   const enviarDatos = async () => {
-    if (!familiaSeleccionada.value || !provinciaSeleccionada.value) {
-      alert('Por favor, seleccione tanto la familia como la provincia');
+    if (!tiendaSeleccionada.value || !tiendaSeleccionada.value) {
+      alert('Por favor, seleccione tanto la tienda como la provincia');
       return;
     }
-    await apiService.predict(provinciaSeleccionada.value, familiaSeleccionada.value);
+    await apiService.predict(provinciaSeleccionada.value, tiendaSeleccionada.value);
   };
 
+  const handleTiendaChange = async (event) => {
+    tienda_state.value = await apiService.postTienda(event);
+  }
+
+  watchEffect(() => {
+    console.log(tienda_state.value?.productos)
+  })
+
+
   onMounted(async () => {
-    familias.value = await apiService.getFamilias();
-    provincias.value = await apiService.getProvincias();
+    tiendas.value = await apiService.getTiendas();
+    //familias.value = await apiService.getFamilias();
   });
 </script>
 
 <template>
   <div>
-    <Combox
+    <ComboboxFamilia
       :data_list="familias"
-      @update:modelValue="familiaSeleccionada = $event">
-    </Combox>
+      @update:modelValue="handleTiendaChange">
+    </ComboboxFamilia>
   </div>
   <div>
     <Combox
-      :data_list="provincias"
-      @update:modelValue="provinciaSeleccionada = $event">
+      :data_list="tiendas"
+      @update:modelValue="handleTiendaChange">
     </Combox>
   </div>
   <div>
@@ -60,3 +71,10 @@
   background-color: #45a049;
 }
 </style>
+
+
+
+
+
+
+
