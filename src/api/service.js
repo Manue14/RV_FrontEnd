@@ -14,18 +14,19 @@ class ApiService {
         return response.data;
     }
 
-    async postTienda(idTienda) {
-        this.connectorInstance.get("/datos_tienda", {
+    async getTienda(idTienda) {
+        const response = await this.connectorInstance.get("/datos_tienda", {
             params: { idTienda }
         })
             .then(function (response) {
-                console.log("Datos de tienda obtenidos");
                 console.log(response.data);
-                return response.data.productos;
+                return response;
             })
             .catch(function (error) {
                 console.log(error);
             })
+
+        return response.data;
     }
 
     async predict(provincia, familia) {

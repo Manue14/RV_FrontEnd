@@ -7,9 +7,9 @@ import {ref, onMounted, watchEffect} from 'vue';
   const apiService = getApiService();
   const tiendas = ref([]);
   const tiendaSeleccionada = ref(null);
+  const tiendaSeleccionadaState = ref(null)
   const familias = ref([]);
   const familiaSeleccionada = ref(null);
-  const tienda_state = ref(null)
 
   const enviarDatos = async () => {
     if (!tiendaSeleccionada.value || !tiendaSeleccionada.value) {
@@ -20,32 +20,39 @@ import {ref, onMounted, watchEffect} from 'vue';
   };
 
   const handleTiendaChange = async (event) => {
-    tienda_state.value = await apiService.postTienda(event);
+    tiendaSeleccionadaState.value = await apiService.getTienda(event);
+    tiendaSeleccionada.value = event;
+  }
+
+  const handleFamiliaChange = async (event) => {
+    familiaSeleccionada.value = event;
   }
 
   watchEffect(() => {
-    console.log(tienda_state.value?.productos)
+    console.log("Tienda: ", tiendaSeleccionada.value);
+    console.log("Familia: ", familiaSeleccionada.value);
   })
 
 
   onMounted(async () => {
     tiendas.value = await apiService.getTiendas();
-    //familias.value = await apiService.getFamilias();
   });
 </script>
 
 <template>
   <div>
-    <ComboboxFamilia
-      :data_list="familias"
-      @update:modelValue="handleTiendaChange">
-    </ComboboxFamilia>
-  </div>
-  <div>
     <Combox
       :data_list="tiendas"
       @update:modelValue="handleTiendaChange">
     </Combox>
+  </div>
+  <div v-if="tiendaSeleccionadaState">
+    <ComboboxFamilia
+      :data_list="tiendaSeleccionadaState.productos"
+      @update:modelValue="handleFamiliaChange">
+    </ComboboxFamilia>
+    <div>{{ tiendaSeleccionadaState.provincia }}</div>
+    <div>{{ tiendaSeleccionadaState.codigo_postal }}</div>
   </div>
   <div>
     <button
@@ -71,10 +78,3 @@ import {ref, onMounted, watchEffect} from 'vue';
   background-color: #45a049;
 }
 </style>
-
-
-
-
-
-
-
