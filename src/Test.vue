@@ -53,6 +53,9 @@ import {ref, onMounted, watchEffect} from 'vue';
     </ComboboxFamilia>
     <div>{{ tiendaSeleccionadaState.provincia }}</div>
     <div>{{ tiendaSeleccionadaState.codigo_postal }}</div>
+      :data_list="familias"
+      @on-change="(familia) => familiaSeleccionada = familia">
+    </Combox>
   </div>
   <div>
     <button
