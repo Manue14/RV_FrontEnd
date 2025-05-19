@@ -11,8 +11,29 @@ class ApiService {
             .catch((error) => {
                 console.log(error)
             })
-        //console.log(response);
-        return response;
+        return response.data;
+    }
+
+    async getFamilias() {
+        const response = await this.connectorInstance.get("/familias")
+            .catch((error) => {
+                console.log(error)
+            })
+        return response.data;
+    }
+
+    async predict(provincia, familia) {
+        this.connectorInstance.post("/predict", {
+            provincia: provincia,
+            familia: familia
+        })
+            .then(function (response) {
+                console.log("Datos enviados axios: " + response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
     }
 }
 
