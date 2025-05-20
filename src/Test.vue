@@ -79,10 +79,14 @@ function toggleSidebar() {
 .dashboard-root {
   display: flex;
   min-height: 100vh;
+  height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #23243a 0%, #2b2e44 100%);
-  padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+  /* Degradado de fondo más profundo */
+  background: radial-gradient(ellipse at 60% 40%, #23243a 60%, #18192b 100%), 
+              linear-gradient(135deg, #23243a 0%, #2b2e44 100%);
+  padding: 1.2rem;
   box-sizing: border-box;
+  align-items: stretch;
 }
 
 .main-content {
@@ -91,7 +95,7 @@ function toggleSidebar() {
   flex-direction: column;
   gap: 1.2rem;
   margin-left: 0.5rem;
-  height: calc(100vh - 2.4rem);
+  height: 100%;
   justify-content: space-between;
 }
 
@@ -102,13 +106,16 @@ function toggleSidebar() {
 }
 
 .dashboard-panel {
-  background: rgba(40, 42, 65, 0.98);
+  /* Efecto glass y fondo */
+  background: rgba(40, 42, 65, 0.7);
   border-radius: 18px;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18);
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18), 0 1.5px 8px 0 rgba(90,107,255,0.08);
   padding: 1.1rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .dashboard-panel-lg {
@@ -127,8 +134,8 @@ function toggleSidebar() {
 .drawer-sidebar {
   width: 340px;
   max-width: 90vw;
-  height: 100vh;
-  background: rgba(40, 42, 65, 0.98);
+  height: 100%;
+  background: rgba(40, 42, 65, 0.7);
   box-shadow: 2px 0 16px rgba(0,0,0,0.25);
   border-radius: 18px 0 0 18px;
   padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -138,6 +145,8 @@ function toggleSidebar() {
   display: flex;
   flex-direction: column;
   margin-left: 0.5rem;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .drawer-enter-active, .drawer-leave-active {
