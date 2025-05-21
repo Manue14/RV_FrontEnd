@@ -34,13 +34,12 @@ class ApiService {
             params: { tienda, familia }
         })
             .then(function (response) {
-                console.log("Prediccion: ", response.data);
                 return response;
             })
             .catch(function (error) {
                 console.log(error);
             });
-
+        return response.data;
     }
 }
 

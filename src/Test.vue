@@ -3,6 +3,7 @@ import {ref, onMounted, watch, watchEffect, provide} from 'vue';
 import { getApiService } from './api/service';
 import Sidebar from './components/Sidebar.vue';
 import NavigationSidebar from './components/NavigationSidebar.vue';
+import LineChart from "@/components/LineChart.vue";
 
 const apiService = getApiService();
 const tiendas = ref([]);
@@ -11,6 +12,56 @@ const tiendaSeleccionadaState = ref(null)
 const familias = ref([]);
 const familiaSeleccionada = ref(null);
 const showSidebar = ref(false);
+
+const chartData = ref({
+  labels: [],
+  datasets: []
+})
+
+const chartOptions = ref({
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top',
+      labels: {
+        color: '#fff',
+        font: {
+          size: 12
+        }
+      }
+    },
+    title: {
+      display: true,
+      text: 'Predicción de Ventas',
+      color: '#fff',
+      font: {
+        size: 16
+      }
+    }
+  },
+  scales: {
+    x: {
+      grid: {
+        color: 'rgba(255, 255, 255, 0.1)'
+      },
+      ticks: {
+        color: '#fff',
+        maxRotation: 45,
+        minRotation: 45
+      }
+    },
+    y: {
+      grid: {
+        color: 'rgba(255, 255, 255, 0.1)'
+      },
+      ticks: {
+        color: '#fff'
+      },
+      beginAtZero: true
+    }
+  }
+});
 
 provide("tiendas", tiendas);
 provide("tiendaSeleccionada", tiendaSeleccionada);
@@ -35,7 +86,47 @@ const enviarDatos = async () => {
     return;
   }
   console.log("Tienda: ", tiendaSeleccionada.value, " Familia: ", familiaSeleccionada.value);
-  await apiService.predict(tiendaSeleccionada.value, familiaSeleccionada.value);
+  const data = await apiService.predict(tiendaSeleccionada.value, familiaSeleccionada.value);
+
+  // Crear etiquetas con mes y año
+  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  
+  // Generar etiquetas para el rango 2019-2025
+  const labels = [];
+  const totalMeses = data.ventas_anteriores.length;
+  const añoInicial = 2019;
+  
+  for (let i = 0; i < totalMeses; i++) {
+    const mes = meses[i % 12];
+    const año = añoInicial + Math.floor(i / 12);
+    labels.push(`${mes} ${año}`);
+  }
+  
+  chartData.value = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Ventas anteriores',
+        data: data.ventas_anteriores,
+        borderColor: '#5A6BFF',
+        backgroundColor: 'rgba(90, 107, 255, 0.1)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true
+      },
+      {
+        label: 'Predicciones',
+        data: data.prediccion_mensual,
+        borderColor: '#45FF9A',
+        backgroundColor: 'rgba(69, 255, 154, 0.1)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true
+      }
+    ]
+  }
+
+
 };
 
 watchEffect(() => {
@@ -58,11 +149,16 @@ function toggleSidebar() {
     <transition name="drawer">
       <aside v-if="showSidebar" class="drawer-sidebar">
         <Sidebar>
-          <button :disabled="tiendaSeleccionada == null || familiaSeleccionada == ''"
-            @click="enviarDatos"
-            class="btn-enviar">
-            Enviar selección
-          </button>
+          <div style="min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
+            <button :disabled="tiendaSeleccionada == null || familiaSeleccionada == ''"
+              @click="enviarDatos"
+              class="btn-enviar">
+              Enviar selección
+            </button>
+            <div v-if="tiendaSeleccionada == null || familiaSeleccionada == ''" style="margin-top: 1rem; color: #aaa; text-align: center;">
+              Selecciona una tienda y una familia para continuar.
+            </div>
+          </div>
         </Sidebar>
       </aside>
     </transition>
@@ -71,7 +167,9 @@ function toggleSidebar() {
         <div class="dashboard-panel dashboard-panel-lg"></div>
         <div class="dashboard-panel dashboard-panel-lg"></div>
       </div>
-      <div class="dashboard-panel dashboard-panel-xl"></div>
+      <div class="dashboard-panel dashboard-panel-xl">
+        <LineChart :chart-data="chartData" :chart-options="chartOptions"></LineChart>
+      </div>
     </div>
   </div>
 </template>
