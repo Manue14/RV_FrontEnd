@@ -13,6 +13,13 @@ const familias = ref([]);
 const familiaSeleccionada = ref(null);
 const showSidebar = ref(false);
 
+// Variables para los datos adicionales
+const productoData = ref(null);
+const prediccionAnualTotal = ref(null);
+const tapb = ref(null);
+const tendenciaEstimacion = ref(null);
+const confiabilidad = ref(null);
+
 const chartData = ref({
   labels: [],
   datasets: []
@@ -88,6 +95,13 @@ const enviarDatos = async () => {
   console.log("Tienda: ", tiendaSeleccionada.value, " Familia: ", familiaSeleccionada.value);
   const data = await apiService.predict(tiendaSeleccionada.value, familiaSeleccionada.value);
 
+  // Actualizar variables con los datos adicionales
+  productoData.value = data.producto;
+  prediccionAnualTotal.value = data.prediccion_anual_total;
+  tapb.value = data.tapb;
+  tendenciaEstimacion.value = data.tendencia_estimacion;
+  confiabilidad.value = data.confiabilidad;
+
   // Crear etiquetas con mes y año
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   
@@ -141,11 +155,44 @@ onMounted(async () => {
 function toggleSidebar() {
   showSidebar.value = !showSidebar.value;
 }
+
+// Handlers para eventos del NavigationSidebar
+const handleDashboardClick = () => {
+  console.log('Botón Dashboard clickeado');
+  // Aquí puedes añadir la lógica para navegar o realizar acciones
+};
+
+const handleModoNocheClick = () => {
+  console.log('Botón Modo noche clickeado');
+  // Aquí puedes añadir la lógica para cambiar el modo noche
+};
+
+const handleRefrescarClick = () => {
+  console.log('Botón Refrescar clickeado');
+  // Aquí puedes añadir la lógica para refrescar datos
+};
+
+const handleNotificacionesClick = () => {
+  console.log('Botón Notificaciones clickeado');
+  // Aquí puedes añadir la lógica para mostrar notificaciones
+};
+
+const handleAjustesClick = () => {
+  console.log('Botón Ajustes clickeado');
+  // Aquí puedes añadir la lógica para abrir ajustes
+};
 </script>
 
 <template>
   <div class="dashboard-root">
-    <NavigationSidebar @toggle-sidebar="toggleSidebar" />
+    <NavigationSidebar 
+      @toggle-sidebar="toggleSidebar"
+      @dashboard-click="handleDashboardClick"
+      @modo-noche-click="handleModoNocheClick"
+      @refrescar-click="handleRefrescarClick"
+      @notificaciones-click="handleNotificacionesClick"
+      @ajustes-click="handleAjustesClick"
+    />
     <transition name="drawer">
       <aside v-if="showSidebar" class="drawer-sidebar">
         <Sidebar>
@@ -164,8 +211,32 @@ function toggleSidebar() {
     </transition>
     <div class="main-content">
       <div class="dashboard-panel-row">
-        <div class="dashboard-panel dashboard-panel-lg"></div>
-        <div class="dashboard-panel dashboard-panel-lg"></div>
+        <div class="dashboard-panel dashboard-panel-lg">
+          <h3>Información del Producto</h3>
+          <div class="data-item">
+            <span class="data-label">Producto:</span>
+            <span class="data-value">{{ productoData }}</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Predicción Anual Total:</span>
+            <span class="data-value highlight">{{ prediccionAnualTotal }}</span>
+          </div>
+        </div>
+        <div class="dashboard-panel dashboard-panel-lg">
+          <h3>Estadísticas de Predicción</h3>
+          <div class="data-item">
+            <span class="data-label">TAPB:</span>
+            <span class="data-value highlight">{{ tapb }}</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Tendencia Estimación:</span>
+            <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ tendenciaEstimacion }}</span>
+          </div>
+          <div class="data-item">
+            <span class="data-label">Confiabilidad:</span>
+            <span class="data-value highlight">{{ confiabilidad }}</span>
+          </div>
+        </div>
       </div>
       <div class="dashboard-panel dashboard-panel-xl">
         <LineChart :chart-data="chartData" :chart-options="chartOptions"></LineChart>
@@ -283,5 +354,39 @@ function toggleSidebar() {
   cursor: unset;
   background: linear-gradient(90deg, #93f5bf 0%, #9fa7f5 100%);
   opacity: 0.7;
+}
+
+.data-item {
+  margin-bottom: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.data-label {
+  font-size: 1rem;
+  color: #aaa;
+  font-weight: 400;
+}
+
+.data-value {
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.data-value.highlight {
+  color: #45FF9A; /* Color llamativo para valores importantes */
+  font-size: 1.4rem;
+}
+
+.trend-up {
+  color: #45FF9A; /* Color verde para tendencia positiva */
+}
+
+.trend-down {
+  color: #FF6B6B; /* Color rojo para tendencia negativa */
 }
 </style>

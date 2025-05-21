@@ -1,11 +1,11 @@
 <template>
   <nav class="sidebar-nav">
     <button class="sidebar-btn" @click="$emit('toggle-sidebar')">Abrir menú lateral</button>
-    <button class="sidebar-btn" @click="alert('Dashboard')">Dashboard</button>
-    <button class="sidebar-btn" @click="alert('Modo noche')">Modo noche</button>
-    <button class="sidebar-btn" @click="alert('Refrescar')">Refrescar</button>
-    <button class="sidebar-btn" @click="alert('Notificaciones')">Notificaciones</button>
-    <button class="sidebar-btn" @click="alert('Ajustes')">Ajustes</button>
+    <button class="sidebar-btn" @click="$emit('dashboard-click')">Dashboard</button>
+    <button class="sidebar-btn" @click="$emit('modo-noche-click')">Modo noche</button>
+    <button class="sidebar-btn" @click="$emit('refrescar-click')">Refrescar</button>
+    <button class="sidebar-btn" @click="$emit('notificaciones-click')">Notificaciones</button>
+    <button class="sidebar-btn" @click="$emit('ajustes-click')">Ajustes</button>
   </nav>
 </template>
 
