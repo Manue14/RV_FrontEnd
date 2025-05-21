@@ -12,16 +12,16 @@ const handleChange = (event) => {
   emit('onChange', event.target.value);
 };
 
-const tiendaSeleccionadaState = inject("tiendaSeleccionadaState");
+const tiendaSeleccionada = inject("tiendaSeleccionada");
+const familiaSeleccionada = inject("familiaSeleccionada");
 </script>
 
 <template>
-  <select @change="handleChange" v-if="tiendaSeleccionadaState">
+  <select @change="handleChange" :disabled="tiendaSeleccionada == null" v-model="familiaSeleccionada">
     <option value="">Seleccione una opción</option>
     <option v-for="(value, key) in data_list"
-            :key="key" :value="key">{{value}}</option>
+            :key="key" :value="value">{{value}}</option>
   </select>
-  <select v-else disabled></select>
 </template>
 
 <style scoped>

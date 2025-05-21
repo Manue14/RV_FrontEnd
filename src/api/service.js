@@ -29,13 +29,13 @@ class ApiService {
         return response.data;
     }
 
-    async predict(provincia, familia) {
-        this.connectorInstance.post("/predict", {
-            provincia: provincia,
-            familia: familia
+    async predict(tienda, familia) {
+        const response = await this.connectorInstance.get("/predict", {
+            params: { tienda, familia }
         })
             .then(function (response) {
-                console.log("Datos enviados axios: " + response);
+                console.log("Prediccion: ", response.data);
+                return response;
             })
             .catch(function (error) {
                 console.log(error);

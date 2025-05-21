@@ -15,7 +15,7 @@ const handleChange = (event) => {
 
 <template>
   <select @change="handleChange">
-    <option value="">------------</option>
+    <option value="">Seleccione una opción</option>
     <option v-for="(value, key) in data_list"
             :key="value" :value="value">{{value}}</option>
   </select>

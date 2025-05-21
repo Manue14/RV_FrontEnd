@@ -19,8 +19,14 @@ provide("familiaSeleccionada", familiaSeleccionada);
 provide("tiendaSeleccionadaState", tiendaSeleccionadaState);
 
 watch(tiendaSeleccionada, async() => {
+  if (tiendaSeleccionada.value == "") {
+    tiendaSeleccionada.value = null
+    tiendaSeleccionadaState.value = null
+    return
+  }
   tiendaSeleccionadaState.value = await apiService.getTienda(tiendaSeleccionada.value);
   familias.value = tiendaSeleccionadaState.value.productos;
+  familiaSeleccionada.value = ""
 })
 
 const enviarDatos = async () => {
@@ -29,7 +35,7 @@ const enviarDatos = async () => {
     return;
   }
   console.log("Tienda: ", tiendaSeleccionada.value, " Familia: ", familiaSeleccionada.value);
-  await apiService.predict(provinciaSeleccionada.value, tiendaSeleccionada.value);
+  await apiService.predict(tiendaSeleccionada.value, familiaSeleccionada.value);
 };
 
 watchEffect(() => {
@@ -52,14 +58,9 @@ function toggleSidebar() {
     <transition name="drawer">
       <aside v-if="showSidebar" class="drawer-sidebar">
         <Sidebar>
-          <button v-if="tiendaSeleccionadaState"
+          <button :disabled="tiendaSeleccionada == null || familiaSeleccionada == ''"
             @click="enviarDatos"
             class="btn-enviar">
-            Enviar selección
-          </button>
-          <button v-else
-            class="btn-enviar"
-            disabled>
             Enviar selección
           </button>
         </Sidebar>
@@ -182,7 +183,7 @@ function toggleSidebar() {
 
 .btn-enviar:disabled {
   cursor: unset;
-  background: #72c475;
+  background: linear-gradient(90deg, #93f5bf 0%, #9fa7f5 100%);
   opacity: 0.7;
 }
 </style>
