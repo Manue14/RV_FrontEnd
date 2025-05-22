@@ -29,11 +29,11 @@ const handleFamiliaChange = (event) => {
             </Combox>
             <div class="subdata_div">
                 <p>Provincia:
-                    <span v-if="tiendaStore.tiendaSeleccionadaState">{{ tiendaStore.tiendaSeleccionadaState.provincia }}</span>
+                    <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ tiendaStore.tiendaSeleccionadaProvincia }}</span>
                     <span v-else class="placeholder_span">PONTEVEDRA</span>
                 </p>
                 <p>CP:
-                    <span v-if="tiendaStore.tiendaSeleccionadaState">{{ tiendaStore.tiendaSeleccionadaState.codigo_postal }}</span>
+                    <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ tiendaStore.tiendaSeleccionadaCodigoPostal }}</span>
                     <span v-else class="placeholder_span">00000</span>
                 </p>
             </div>
@@ -49,11 +49,11 @@ const handleFamiliaChange = (event) => {
             </Combox>
             <div class="subdata_div">
                 <p>Periodo:
-                    <span v-if="tiendaStore.tiendaSeleccionadaState">{{ tiendaStore.tiendaSeleccionadaState.provincia }}</span>
+                    <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ tiendaStore.tiendaSeleccionadaProvincia }}</span>
                     <span v-else class="placeholder_span">SEPTIEMBRE-FEBRERO</span>
                 </p>
                 <p>Año:
-                    <span v-if="tiendaStore.tiendaSeleccionadaState">{{ new Date().getFullYear() }}</span>
+                    <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ new Date().getFullYear() }}</span>
                     <span v-else class="placeholder_span">2025</span>
                 </p>
             </div>

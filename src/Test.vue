@@ -1,92 +1,34 @@
 <script setup>
 import {ref, onMounted, watch } from 'vue';
-import { storeToRefs } from 'pinia';
 import { getApiService } from './api/service';
 import { useMainStateStore } from './store/main';
 import { useTiendaStore } from './store/tiendaStore';
 import { CONSTANTS } from './constants/constants';
 import Sidebar from './components/Sidebar.vue';
 import NavigationSidebar from './components/NavigationSidebar.vue';
-import LineChart from "@/components/LineChart.vue";
+import PredictionsDashboard from './components/PredictionsDashboard.vue';
+import PredictionsDashboardPlaceholder from './components/PredictionsDashboardPlaceholder.vue';
 
 const apiService = getApiService();
 const mainStateStore = useMainStateStore();
 const tiendaStore = useTiendaStore();
-const showSidebar = ref(false);
-
-const {
-  tiendaSeleccionada,
-  tiendaSeleccionadaState,
-  tiendas,
-  familias,
-  familiaSeleccionada
-} = storeToRefs(tiendaStore)
-
-// Variables para los datos adicionales
-const productoData = ref(null);
-const prediccionAnualTotal = ref(null);
-const tapb = ref(null);
-const tendenciaEstimacion = ref(null);
-const confiabilidad = ref(null);
 
 const chartData = ref({
   labels: [],
   datasets: []
 })
 
-const chartOptions = ref({
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'top',
-      labels: {
-        color: '#fff',
-        font: {
-          size: 12
-        }
-      }
-    },
-    title: {
-      display: true,
-      text: 'Predicción de Ventas',
-      color: '#fff',
-      font: {
-        size: 16
-      }
-    }
-  },
-  scales: {
-    x: {
-      grid: {
-        color: 'rgba(255, 255, 255, 0.1)'
-      },
-      ticks: {
-        color: '#fff',
-        maxRotation: 45,
-        minRotation: 45
-      }
-    },
-    y: {
-      grid: {
-        color: 'rgba(255, 255, 255, 0.1)'
-      },
-      ticks: {
-        color: '#fff'
-      },
-      beginAtZero: true
-    }
-  }
-});
-
-watch(tiendaSeleccionada, async() => {
+watch(() => tiendaStore.tiendaSeleccionada, async() => {
   if (tiendaStore.tiendaSeleccionada == "") {
-    tiendaStore.tiendaSeleccionadaState = null;
+    tiendaStore.tiendaSeleccionadaProvincia = "";
+    tiendaStore.tiendaSeleccionadaCodigoPostal = "";
     tiendaStore.familiaSeleccionada = "";
     return
   }
-  tiendaStore.tiendaSeleccionadaState = await apiService.getTienda(tiendaStore.tiendaSeleccionada);
-  tiendaStore.familias = tiendaStore.tiendaSeleccionadaState.productos;
+  const data = await apiService.getTienda(tiendaStore.tiendaSeleccionada);
+  tiendaStore.familias = data.productos;
+  tiendaStore.tiendaSeleccionadaProvincia = data.provincia;
+  tiendaStore.tiendaSeleccionadaCodigoPostal = data.codigo_postal;
   tiendaStore.familiaSeleccionada = "";
 })
 
@@ -98,51 +40,13 @@ const enviarDatos = async () => {
   const data = await apiService.predict(tiendaStore.tiendaSeleccionada, tiendaStore.familiaSeleccionada);
 
   // Actualizar variables con los datos adicionales
-  productoData.value = data.producto;
-  prediccionAnualTotal.value = data.prediccion_anual_total;
-  tapb.value = data.tapb;
-  tendenciaEstimacion.value = data.tendencia_estimacion;
-  confiabilidad.value = data.confiabilidad;
-
-  // Crear etiquetas con mes y año
-  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  
-  // Generar etiquetas para el rango 2019-2025
-  const labels = [];
-  const totalMeses = data.ventas_anteriores.length;
-  const añoInicial = 2019;
-  
-  for (let i = 0; i < totalMeses; i++) {
-    const mes = meses[i % 12];
-    const año = añoInicial + Math.floor(i / 12);
-    labels.push(`${mes} ${año}`);
-  }
-  
-  chartData.value = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'Ventas anteriores',
-        data: data.ventas_anteriores,
-        borderColor: '#5A6BFF',
-        backgroundColor: 'rgba(90, 107, 255, 0.1)',
-        borderWidth: 2,
-        tension: 0.4,
-        fill: true
-      },
-      {
-        label: 'Predicciones',
-        data: data.prediccion_mensual,
-        borderColor: '#45FF9A',
-        backgroundColor: 'rgba(69, 255, 154, 0.1)',
-        borderWidth: 2,
-        tension: 0.4,
-        fill: true
-      }
-    ]
-  }
-
-
+  tiendaStore.productoData = data.producto;
+  tiendaStore.prediccionAnualTotal = data.prediccion_anual_total;
+  tiendaStore.tapb = data.tapb;
+  tiendaStore.tendenciaEstimacion = data.tendencia_estimacion;
+  tiendaStore.confiabilidad = data.confiabilidad;
+  tiendaStore.prediccionMensual = data.prediccion_mensual;
+  tiendaStore.ventasAnteriores = data.ventas_anteriores;
 };
 
 onMounted(async () => {
@@ -150,7 +54,7 @@ onMounted(async () => {
 });
 
 function toggleSidebar() {
-  showSidebar.value = !showSidebar.value;
+  mainStateStore.isSideBarToggled = !mainStateStore.isSideBarToggled;
 }
 
 // Handlers para eventos del NavigationSidebar
@@ -189,7 +93,7 @@ const handleAjustesClick = () => {
       @ajustes-click="handleAjustesClick"
     />
     <transition name="drawer">
-      <aside v-if="showSidebar" class="drawer-sidebar">
+      <aside v-if="mainStateStore.isSideBarToggled" class="drawer-sidebar">
         <Sidebar>
           <div style="min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
             <button :disabled="tiendaStore.tiendaSeleccionada == null || tiendaStore.familiaSeleccionada == ''"
@@ -204,39 +108,15 @@ const handleAjustesClick = () => {
         </Sidebar>
       </aside>
     </transition>
-    <div class="main-content">
-      <div class="dashboard-panel-row">
-        <div class="dashboard-panel dashboard-panel-lg">
-          <h3>Información del Producto</h3>
-          <div class="data-item">
-            <span class="data-label">Producto:</span>
-            <span class="data-value">{{ productoData }}</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Predicción Anual Total:</span>
-            <span class="data-value highlight">{{ prediccionAnualTotal }}</span>
-          </div>
-        </div>
-        <div class="dashboard-panel dashboard-panel-lg">
-          <h3>Estadísticas de Predicción</h3>
-          <div class="data-item">
-            <span class="data-label">TAPB:</span>
-            <span class="data-value highlight">{{ tapb }}</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Tendencia Estimación:</span>
-            <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ tendenciaEstimacion }}</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Confiabilidad:</span>
-            <span class="data-value highlight">{{ confiabilidad }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="dashboard-panel dashboard-panel-xl">
-        <LineChart :chart-data="chartData" :chart-options="chartOptions"></LineChart>
-      </div>
-    </div>
+    <PredictionsDashboard v-if="tiendaStore.productoData"
+    :ventas-anteriores="tiendaStore.ventasAnteriores"
+    :prediccion-anual="tiendaStore.prediccionAnualTotal"
+    :prediccion-mensual="tiendaStore.prediccionMensual"
+    :producto-data="tiendaStore.productoData"
+    :tapb="tiendaStore.tapb"
+    :tendencia-estimacion="tiendaStore.tendenciaEstimacion"
+    :confiabilidad="tiendaStore.confiabilidad"></PredictionsDashboard>
+    <PredictionsDashboardPlaceholder v-if="!tiendaStore.productoData"></PredictionsDashboardPlaceholder>
   </div>
 </template>
 
@@ -252,48 +132,6 @@ const handleAjustesClick = () => {
   padding: 1.2rem;
   box-sizing: border-box;
   align-items: stretch;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  margin-left: 0.5rem;
-  height: 100%;
-  justify-content: space-between;
-}
-
-.dashboard-panel-row {
-  display: flex;
-  gap: 1.2rem;
-  height: 38%;
-}
-
-.dashboard-panel {
-  /* Efecto glass y fondo */
-  background: rgba(40, 42, 65, 0.7);
-  border-radius: 18px;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18), 0 1.5px 8px 0 rgba(90,107,255,0.08);
-  padding: 1.1rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.dashboard-panel-lg {
-  flex: 1;
-  height: 100%;
-  min-height: 0;
-}
-
-.dashboard-panel-xl {
-  height: 48%;
-  flex: 1;
-  width: 100%;
-  min-height: 0;
 }
 
 .drawer-sidebar {
@@ -349,39 +187,5 @@ const handleAjustesClick = () => {
   cursor: unset;
   background: linear-gradient(90deg, #93f5bf 0%, #9fa7f5 100%);
   opacity: 0.7;
-}
-
-.data-item {
-  margin-bottom: 0.8rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.data-label {
-  font-size: 1rem;
-  color: #aaa;
-  font-weight: 400;
-}
-
-.data-value {
-  font-size: 1.1rem;
-  color: #fff;
-  font-weight: 600;
-}
-
-.data-value.highlight {
-  color: #45FF9A; /* Color llamativo para valores importantes */
-  font-size: 1.4rem;
-}
-
-.trend-up {
-  color: #45FF9A; /* Color verde para tendencia positiva */
-}
-
-.trend-down {
-  color: #FF6B6B; /* Color rojo para tendencia negativa */
 }
 </style>
