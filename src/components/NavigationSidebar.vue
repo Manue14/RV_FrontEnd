@@ -1,10 +1,10 @@
 <template>
   <nav class="sidebar-nav">
     <button class="sidebar-btn" @click="$emit('toggle-sidebar')">Abrir menú lateral</button>
+    <button class="sidebar-btn" @click="$emit('tienda-click')">Por tienda</button>
+    <button class="sidebar-btn" @click="$emit('temporada-click')">Por temporada</button>
     <button class="sidebar-btn" @click="$emit('dashboard-click')">Dashboard</button>
-    <button class="sidebar-btn" @click="$emit('modo-noche-click')">Modo noche</button>
-    <button class="sidebar-btn" @click="$emit('refrescar-click')">Refrescar</button>
-    <button class="sidebar-btn" @click="$emit('notificaciones-click')">Notificaciones</button>
+    <button class="sidebar-btn" @click="$emit('modo-noche-click')">Modo Noche</button>
     <button class="sidebar-btn" @click="$emit('ajustes-click')">Ajustes</button>
   </nav>
 </template>

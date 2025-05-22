@@ -1,5 +1,5 @@
 <script setup>
-import { inject } from 'vue'
+import { useTiendaStore } from '../store/tiendaStore';
 defineProps({
   data_list: {
     type: JSON,
@@ -12,12 +12,11 @@ const handleChange = (event) => {
   emit('onChange', event.target.value);
 };
 
-const tiendaSeleccionada = inject("tiendaSeleccionada");
-const familiaSeleccionada = inject("familiaSeleccionada");
+const tiendaStore = useTiendaStore();
 </script>
 
 <template>
-  <select @change="handleChange" :disabled="tiendaSeleccionada == null" v-model="familiaSeleccionada">
+  <select @change="handleChange" :disabled="tiendaStore.tiendaSeleccionada == ''" v-model="tiendaStore.familiaSeleccionada">
     <option value="">Seleccione una opción</option>
     <option v-for="(value, key) in data_list"
             :key="key" :value="value">{{value}}</option>

@@ -1,17 +1,26 @@
 <script setup>
-import {ref, onMounted, watch, watchEffect, provide} from 'vue';
+import {ref, onMounted, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import { getApiService } from './api/service';
+import { useMainStateStore } from './store/main';
+import { useTiendaStore } from './store/tiendaStore';
+import { CONSTANTS } from './constants/constants';
 import Sidebar from './components/Sidebar.vue';
 import NavigationSidebar from './components/NavigationSidebar.vue';
 import LineChart from "@/components/LineChart.vue";
 
 const apiService = getApiService();
-const tiendas = ref([]);
-const tiendaSeleccionada = ref(null);
-const tiendaSeleccionadaState = ref(null)
-const familias = ref([]);
-const familiaSeleccionada = ref(null);
+const mainStateStore = useMainStateStore();
+const tiendaStore = useTiendaStore();
 const showSidebar = ref(false);
+
+const {
+  tiendaSeleccionada,
+  tiendaSeleccionadaState,
+  tiendas,
+  familias,
+  familiaSeleccionada
+} = storeToRefs(tiendaStore)
 
 // Variables para los datos adicionales
 const productoData = ref(null);
@@ -70,30 +79,23 @@ const chartOptions = ref({
   }
 });
 
-provide("tiendas", tiendas);
-provide("tiendaSeleccionada", tiendaSeleccionada);
-provide("familias", familias);
-provide("familiaSeleccionada", familiaSeleccionada);
-provide("tiendaSeleccionadaState", tiendaSeleccionadaState);
-
 watch(tiendaSeleccionada, async() => {
-  if (tiendaSeleccionada.value == "") {
-    tiendaSeleccionada.value = null
-    tiendaSeleccionadaState.value = null
+  if (tiendaStore.tiendaSeleccionada == "") {
+    tiendaStore.tiendaSeleccionadaState = null;
+    tiendaStore.familiaSeleccionada = "";
     return
   }
-  tiendaSeleccionadaState.value = await apiService.getTienda(tiendaSeleccionada.value);
-  familias.value = tiendaSeleccionadaState.value.productos;
-  familiaSeleccionada.value = ""
+  tiendaStore.tiendaSeleccionadaState = await apiService.getTienda(tiendaStore.tiendaSeleccionada);
+  tiendaStore.familias = tiendaStore.tiendaSeleccionadaState.productos;
+  tiendaStore.familiaSeleccionada = "";
 })
 
 const enviarDatos = async () => {
-  if (!tiendaSeleccionada.value || !tiendaSeleccionada.value) {
+  if (!tiendaStore.tiendaSeleccionada || !tiendaStore.familiaSeleccionada) {
     alert('Por favor, seleccione tanto la tienda como la provincia');
     return;
   }
-  console.log("Tienda: ", tiendaSeleccionada.value, " Familia: ", familiaSeleccionada.value);
-  const data = await apiService.predict(tiendaSeleccionada.value, familiaSeleccionada.value);
+  const data = await apiService.predict(tiendaStore.tiendaSeleccionada, tiendaStore.familiaSeleccionada);
 
   // Actualizar variables con los datos adicionales
   productoData.value = data.producto;
@@ -143,13 +145,8 @@ const enviarDatos = async () => {
 
 };
 
-watchEffect(() => {
-  console.log("Tienda: ", tiendaSeleccionada.value);
-  console.log("Familia: ", familiaSeleccionada.value);
-})
-
 onMounted(async () => {
-  tiendas.value = await apiService.getTiendas();
+  tiendaStore.tiendas = await apiService.getTiendas();
 });
 
 function toggleSidebar() {
@@ -167,14 +164,12 @@ const handleModoNocheClick = () => {
   // Aquí puedes añadir la lógica para cambiar el modo noche
 };
 
-const handleRefrescarClick = () => {
-  console.log('Botón Refrescar clickeado');
-  // Aquí puedes añadir la lógica para refrescar datos
+const handleTiendaClick = () => {
+  mainStateStore.selectedView = CONSTANTS.TIENDA_VIEW;
 };
 
-const handleNotificacionesClick = () => {
-  console.log('Botón Notificaciones clickeado');
-  // Aquí puedes añadir la lógica para mostrar notificaciones
+const handleTemporadaClick = () => {
+  mainStateStore.selectedView = CONSTANTS.TEMPORADA_VIEW;
 };
 
 const handleAjustesClick = () => {
@@ -187,22 +182,22 @@ const handleAjustesClick = () => {
   <div class="dashboard-root">
     <NavigationSidebar 
       @toggle-sidebar="toggleSidebar"
-      @dashboard-click="handleDashboardClick"
-      @modo-noche-click="handleModoNocheClick"
-      @refrescar-click="handleRefrescarClick"
-      @notificaciones-click="handleNotificacionesClick"
+      @tienda-click="handleTiendaClick"
+      @temporada-click="handleTemporadaClick"
+      @dashboard-click="handleRefrescarClick"
+      @modo-noche-click="handleNotificacionesClick"
       @ajustes-click="handleAjustesClick"
     />
     <transition name="drawer">
       <aside v-if="showSidebar" class="drawer-sidebar">
         <Sidebar>
           <div style="min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-            <button :disabled="tiendaSeleccionada == null || familiaSeleccionada == ''"
+            <button :disabled="tiendaStore.tiendaSeleccionada == null || tiendaStore.familiaSeleccionada == ''"
               @click="enviarDatos"
               class="btn-enviar">
               Enviar selección
             </button>
-            <div v-if="tiendaSeleccionada == null || familiaSeleccionada == ''" style="margin-top: 1rem; color: #aaa; text-align: center;">
+            <div v-if="tiendaStore.tiendaSeleccionada == '' || tiendaStore.familiaSeleccionada == ''" style="margin-top: 1rem; color: #aaa; text-align: center;">
               Selecciona una tienda y una familia para continuar.
             </div>
           </div>

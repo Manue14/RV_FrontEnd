@@ -1,47 +1,69 @@
 <script setup>
 import Combox from "@/components/Combox.vue";
 import ComboboxFamilia from "@/components/ComboboxFamilia.vue";
-import { inject } from 'vue'
+import { useMainStateStore } from '../store/main'
+import { useTiendaStore } from '../store/tiendaStore';
+import { CONSTANTS } from '../constants/constants';
 
-const tiendas = inject("tiendas");
-const tiendaSeleccionada = inject("tiendaSeleccionada");
-const familias = inject("familias");
-const familiaSeleccionada = inject("familiaSeleccionada");
-const tiendaSeleccionadaState = inject("tiendaSeleccionadaState");
+const mainStateStore = useMainStateStore();
+const tiendaStore = useTiendaStore();
 
 const handleTiendaChange = (event) => {
-    tiendaSeleccionada.value = event;
+    tiendaStore.tiendaSeleccionada = event;
 }
 
 const handleFamiliaChange = (event) => {
-    familiaSeleccionada.value = event;
+    tiendaStore.familiaSeleccionada = event;
 }
 </script>
 
 <template>
   <div class="sidebar">
-    <h2>Tienda</h2>
-    <div class="tienda_div">
-        <Combox
-        :data_list="tiendas"
-        @on-change="handleTiendaChange">
-        </Combox>
-        <div class="tienda_data_div">
-            <p>Provincia:
-                <span v-if="tiendaSeleccionadaState">{{ tiendaSeleccionadaState.provincia }}</span>
-                <span v-else class="placeholder_span">PONTEVEDRA</span>
-            </p>
-            <p>CP:
-                <span v-if="tiendaSeleccionadaState">{{ tiendaSeleccionadaState.codigo_postal }}</span>
-                <span v-else class="placeholder_span">00000</span>
-            </p>
+    <span v-if="mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW">
+        <h2>Tienda</h2>
+        <div class="data_div">
+            <Combox
+            :data_list="tiendaStore.tiendas"
+            v-model="tiendaStore.tiendaSeleccionada"
+            @on-change="handleTiendaChange">
+            </Combox>
+            <div class="subdata_div">
+                <p>Provincia:
+                    <span v-if="tiendaStore.tiendaSeleccionadaState">{{ tiendaStore.tiendaSeleccionadaState.provincia }}</span>
+                    <span v-else class="placeholder_span">PONTEVEDRA</span>
+                </p>
+                <p>CP:
+                    <span v-if="tiendaStore.tiendaSeleccionadaState">{{ tiendaStore.tiendaSeleccionadaState.codigo_postal }}</span>
+                    <span v-else class="placeholder_span">00000</span>
+                </p>
+            </div>
         </div>
-    </div>
+    </span>
+
+    <span v-if="mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW">
+        <h2>Temporada</h2>
+        <div class="data_div">
+            <Combox
+            :data_list="tiendaStore.tiendas"
+            @on-change="handleTiendaChange">
+            </Combox>
+            <div class="subdata_div">
+                <p>Periodo:
+                    <span v-if="tiendaStore.tiendaSeleccionadaState">{{ tiendaStore.tiendaSeleccionadaState.provincia }}</span>
+                    <span v-else class="placeholder_span">SEPTIEMBRE-FEBRERO</span>
+                </p>
+                <p>Año:
+                    <span v-if="tiendaStore.tiendaSeleccionadaState">{{ new Date().getFullYear() }}</span>
+                    <span v-else class="placeholder_span">2025</span>
+                </p>
+            </div>
+        </div>
+    </span>
 
     <h2>Familia</h2>
     <div class="familia_div">
         <ComboboxFamilia
-        :data_list="familias"
+        :data_list="tiendaStore.familias"
         @on-change="handleFamiliaChange">
         </ComboboxFamilia>
     </div>
@@ -54,12 +76,12 @@ const handleFamiliaChange = (event) => {
 </template>
 
 <style scoped>
-.tienda_div, .familia_div {
+.data_div, .familia_div {
     padding-left: 1%;
     margin-bottom: 20%;
 }
 
-.tienda_data_div {
+.subdata_div {
     margin-top: 8%;
 }
 

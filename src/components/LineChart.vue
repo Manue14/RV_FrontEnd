@@ -66,22 +66,3 @@ export default {
   color: #666;
 }
 </style>
-
-
-<!--const datos = {
-labels: ['Enero', 'Febrero', 'Marzo'],
-datasets: [
-{ label: 'Ventas', data: [10, 20, 30], backgroundColor: '#5A6BFF' }
-]
-}
-
-const opciones = {
-responsive: true,
-plugins: {
-legend: { display: true },
-title: { display: true, text: 'Ventas por mes' }
-},
-scales: {
-y: { beginAtZero: true }
-}
-}*/-->
