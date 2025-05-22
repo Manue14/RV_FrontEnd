@@ -1,11 +1,14 @@
 <template>
   <nav class="sidebar-nav">
-    <button class="sidebar-btn" @click="$emit('toggle-sidebar')">Abrir menú lateral</button>
-    <button class="sidebar-btn" @click="$emit('tienda-click')">Por tienda</button>
-    <button class="sidebar-btn" @click="$emit('temporada-click')">Por temporada</button>
-    <button class="sidebar-btn" @click="$emit('dashboard-click')">Dashboard</button>
-    <button class="sidebar-btn" @click="$emit('modo-noche-click')">Modo Noche</button>
-    <button class="sidebar-btn" @click="$emit('ajustes-click')">Ajustes</button>
+    <!-- Botón de abrir menú lateral (icono grafica) -->
+    <button class="sidebar-btn icon-btn top-btn" @click="$emit('toggle-sidebar')">
+      <img src="/src/assets/grafica.png" alt="Panel" class="icon-img" />
+    </button>
+    <div class="spacer"></div>
+    <!-- Botón de ajustes (icono ajustes) -->
+    <button class="sidebar-btn icon-btn bottom-btn" @click="$emit('ajustes-click')">
+      <img src="/src/assets/ajustes.png" alt="Ajustes" class="icon-img" />
+    </button>
   </nav>
 </template>
 
@@ -19,24 +22,38 @@
   flex-direction: column;
   align-items: center;
   background: #23243a;
-  height: 100%;
-  min-height: 100%;
+  height: 99%;
   width: 120px;
-  padding: 1rem 0;
-  gap: 1rem;
+  padding: 2rem 0 2rem 0;
 }
-.sidebar-btn {
-  width: 100px;
-  padding: 0.5rem 0.5rem;
-  background: #35365a;
-  color: #fff;
+.spacer {
+  flex: 1 1 auto;
+  width: 100%;
+}
+.icon-btn {
+  background: transparent;
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   transition: background 0.2s;
+  margin: 0.5rem 0;
 }
-.sidebar-btn:hover {
-  background: #4a4b7d;
+.icon-btn:hover {
+  background: #35365a;
+}
+.icon-img {
+  width: 40px;
+  height: 40px;
+}
+.top-btn {
+  margin-top: 0.5rem;
+}
+.bottom-btn {
+  margin-bottom: 0.5rem;
 }
 </style> 
