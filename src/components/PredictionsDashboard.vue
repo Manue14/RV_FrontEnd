@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import LineChart from "@/components/LineChart.vue";
 import { watch } from 'vue';
+import { Bar } from 'vue-chartjs';
 
 const props = defineProps({
   ventasAnteriores: {
@@ -32,6 +33,11 @@ const chartData = ref({
   datasets: []
 })
 
+const barChartData = ref({
+  label: [],
+  datasets: []
+})
+
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -47,7 +53,52 @@ const chartOptions = {
     },
     title: {
       display: true,
-      text: 'Predicción de Ventas',
+      text: 'Predicción de Ventas por Mes',
+      color: '#fff',
+      font: {
+        size: 16
+      }
+    }
+  },
+  scales: {
+    x: {
+      grid: {
+        color: 'rgba(255, 255, 255, 0.1)'
+      },
+      ticks: {
+        color: '#fff',
+        maxRotation: 45,
+        minRotation: 45
+      }
+    },
+    y: {
+      grid: {
+        color: 'rgba(255, 255, 255, 0.1)'
+      },
+      ticks: {
+        color: '#fff'
+      },
+      beginAtZero: true
+    }
+  }
+};
+
+const barChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top',
+      labels: {
+        color: '#fff',
+        font: {
+          size: 12
+        }
+      }
+    },
+    title: {
+      display: true,
+      text: 'Total Ventas por Año',
       color: '#fff',
       font: {
         size: 16
@@ -78,6 +129,8 @@ const chartOptions = {
 };
 
 function mountGraph() {
+  mountYearlyGraph();
+  
   // Crear etiquetas con mes y año
   const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     
@@ -117,6 +170,38 @@ function mountGraph() {
   }
 }
 
+function mountYearlyGraph() {
+  const ventas_acumuladas = Object.entries(props.ventasAnteriores).reduce((acc, [key, value]) => {
+    const year = key.substring(0, 4);
+    if (acc[year]) {
+      acc[year] += value;
+    } else {
+      acc[year] = value;
+    }
+    return acc;
+  }, {});
+
+  const labels = Object.keys(ventas_acumuladas);
+  const data = Object.values(ventas_acumuladas);
+
+  barChartData.value = {
+    labels,
+    datasets: [
+      {
+        label: 'Ventas por Año',
+        data,
+        backgroundColor: 'rgba(90, 107, 255, 0.6)',
+        borderColor: '#5A6BFF',
+        borderWidth: 1
+      }
+    ]
+  };
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 watch(() => props.productoData, () => {
   mountGraph();
 })
@@ -128,7 +213,6 @@ mountGraph();
   <div class="main-content">
       <div class="dashboard-panel-row">
         <div class="dashboard-panel dashboard-panel-lg">
-          <h3>Información del Producto</h3>
           <div class="data-item">
             <span class="data-label">Producto:</span>
             <span class="data-value">{{ productoData }}</span>
@@ -137,21 +221,24 @@ mountGraph();
             <span class="data-label">Predicción Anual Total:</span>
             <span class="data-value highlight">{{ prediccionAnual }}</span>
           </div>
-        </div>
-        <div class="dashboard-panel dashboard-panel-lg">
-          <h3>Estadísticas de Predicción</h3>
+
+          <h3>Estadísticas de Predicción Anual</h3>
           <div class="data-item">
             <span class="data-label">TAPB:</span>
-            <span class="data-value highlight">{{ tapb }}</span>
+            <span class="data-value highlight">{{ tapb.toFixed(2) }}</span>
           </div>
           <div class="data-item">
             <span class="data-label">Tendencia Estimación:</span>
-            <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ tendenciaEstimacion }}</span>
+            <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ capitalize(tendenciaEstimacion) }}</span>
           </div>
           <div class="data-item">
             <span class="data-label">Confiabilidad:</span>
-            <span class="data-value highlight">{{ confiabilidad }}</span>
+            <span class="data-value highlight">{{ capitalize(confiabilidad) }}</span>
           </div>
+
+        </div>
+        <div class="dashboard-panel dashboard-panel-lg">
+          <Bar :data="barChartData" :options="barChartOptions"></Bar>
         </div>
       </div>
       <div class="dashboard-panel dashboard-panel-xl">
