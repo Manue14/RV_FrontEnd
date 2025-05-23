@@ -16,6 +16,14 @@
   --color-border-light: #3A3C52;
 }
 
+body.light-theme {
+  --color-background: #f8f8f8;
+  --color-panel: #fff;
+  --color-text-primary: #23243a;
+  --color-text-secondary: #4a4b7d;
+  --color-border-light: #e0e0e0;
+}
+
 #app {
   background-color: var(--color-background);
   color: var(--color-text-primary);
