@@ -202,9 +202,12 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-watch(() => props.productoData, () => {
-  mountGraph();
-})
+watch(
+  [() => props.productoData, () => props.ventasAnteriores, () => props.prediccionAnual, () => props.prediccionMensual],
+  () => {
+    mountGraph();
+  }
+);
 
 mountGraph();
 </script>
