@@ -41,6 +41,7 @@ const enviarDatos = async () => {
 
   // Actualizar variables con los datos adicionales
   tiendaStore.productoData = data.producto;
+  tiendaStore.prediccionAnual = data.prediccion_anual;
   tiendaStore.prediccionAnualTotal = data.prediccion_anual_total;
   tiendaStore.tapb = data.tapb;
   tiendaStore.tendenciaEstimacion = data.tendencia_estimacion;
@@ -110,7 +111,8 @@ const handleAjustesClick = () => {
     </transition>
     <PredictionsDashboard v-if="tiendaStore.productoData"
     :ventas-anteriores="tiendaStore.ventasAnteriores"
-    :prediccion-anual="tiendaStore.prediccionAnualTotal"
+    :prediccion-anual="tiendaStore.prediccionAnual"
+    :prediccion-anual-total="tiendaStore.prediccionAnualTotal"
     :prediccion-mensual="tiendaStore.prediccionMensual"
     :producto-data="tiendaStore.productoData"
     :tapb="tiendaStore.tapb"

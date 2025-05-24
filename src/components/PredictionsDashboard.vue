@@ -11,6 +11,9 @@ const props = defineProps({
   prediccionAnual: {
     required: true
   },
+  prediccionAnualTotal: {
+    required: true
+  },
   prediccionMensual: {
     required: true
   },
@@ -114,7 +117,8 @@ const barChartOptions = {
         color: '#fff',
         maxRotation: 45,
         minRotation: 45
-      }
+      },
+      stacked: true
     },
     y: {
       grid: {
@@ -123,7 +127,8 @@ const barChartOptions = {
       ticks: {
         color: '#fff'
       },
-      beginAtZero: true
+      beginAtZero: true,
+      stacked: true
     }
   }
 };
@@ -183,6 +188,24 @@ function mountYearlyGraph() {
 
   const labels = Object.keys(ventas_acumuladas);
   const data = Object.values(ventas_acumuladas);
+  const predictionBarsData = [];
+  for (let i = 0; i <= labels.length - 1; i++) {
+    if (i < labels.length - 1) {
+      predictionBarsData[i] = 0;
+    } else {
+      const nextYear = new Date().getFullYear() + 1
+
+      const ventas_anuales_acumuladas = Object.entries(props.prediccionAnual).reduce((acc, [key, value]) => {
+        console.log(value)
+        if (key.substring(0, 4) !== nextYear.toString()) {
+          acc += parseInt(value);
+        }
+        return acc;
+      }, 0);
+      console.log("aaaaaa: ", ventas_anuales_acumuladas)
+      predictionBarsData[i] = parseInt(ventas_anuales_acumuladas);
+    }
+  }
 
   barChartData.value = {
     labels,
@@ -193,6 +216,15 @@ function mountYearlyGraph() {
         backgroundColor: 'rgba(90, 107, 255, 0.6)',
         borderColor: '#5A6BFF',
         borderWidth: 1
+      },
+      {
+        label: 'Predicción Anual Total',
+        data: predictionBarsData,
+        borderColor: '#45FF9A',
+        backgroundColor: 'rgba(69, 255, 154, 0.1)',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true
       }
     ]
   };
@@ -222,13 +254,13 @@ mountGraph();
           </div>
           <div class="data-item">
             <span class="data-label">Predicción Anual Total:</span>
-            <span class="data-value highlight">{{ prediccionAnual }}</span>
+            <span class="data-value highlight">{{ prediccionAnualTotal }}</span>
           </div>
 
           <h3>Estadísticas de Predicción Anual</h3>
           <div class="data-item">
             <span class="data-label">TAPB:</span>
-            <span class="data-value highlight">{{ tapb.toFixed(2) }}</span>
+            <span class="data-value highlight">{{ tapb.toFixed(2) }}%</span>
           </div>
           <div class="data-item">
             <span class="data-label">Tendencia Estimación:</span>
