@@ -202,7 +202,6 @@ function mountYearlyGraph() {
         }
         return acc;
       }, 0);
-      console.log("aaaaaa: ", ventas_anuales_acumuladas)
       predictionBarsData[i] = parseInt(ventas_anuales_acumuladas);
     }
   }

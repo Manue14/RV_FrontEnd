@@ -3,15 +3,18 @@ import {ref, onMounted, watch } from 'vue';
 import { getApiService } from './api/service';
 import { useMainStateStore } from './store/main';
 import { useTiendaStore } from './store/tiendaStore';
+import { useTemporadaStore } from './store/temporadaStore';
 import { CONSTANTS } from './constants/constants';
 import Sidebar from './components/Sidebar.vue';
 import NavigationSidebar from './components/NavigationSidebar.vue';
 import PredictionsDashboard from './components/PredictionsDashboard.vue';
 import PredictionsDashboardPlaceholder from './components/PredictionsDashboardPlaceholder.vue';
+import LoadingOverlay from './components/LoadingOverlay.vue';
 
 const apiService = getApiService();
 const mainStateStore = useMainStateStore();
 const tiendaStore = useTiendaStore();
+const temporadaStore = useTemporadaStore();
 
 const chartData = ref({
   labels: [],
@@ -37,8 +40,10 @@ const enviarDatos = async () => {
     alert('Por favor, seleccione tanto la tienda como la provincia');
     return;
   }
+  mainStateStore.waitingForApi = true;
   const data = await apiService.predict(tiendaStore.tiendaSeleccionada, tiendaStore.familiaSeleccionada);
-
+  mainStateStore.waitingForApi = false;
+  
   // Actualizar variables con los datos adicionales
   tiendaStore.productoData = data.producto;
   tiendaStore.prediccionAnual = data.prediccion_anual;
@@ -84,6 +89,7 @@ const handleAjustesClick = () => {
 </script>
 
 <template>
+  <LoadingOverlay :is-loading="mainStateStore.waitingForApi"></LoadingOverlay>
   <div class="dashboard-root">
     <NavigationSidebar 
       @toggle-sidebar="toggleSidebar"
@@ -109,7 +115,7 @@ const handleAjustesClick = () => {
         </Sidebar>
       </aside>
     </transition>
-    <PredictionsDashboard v-if="tiendaStore.productoData"
+    <PredictionsDashboard v-if="tiendaStore.productoData && mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW"
     :ventas-anteriores="tiendaStore.ventasAnteriores"
     :prediccion-anual="tiendaStore.prediccionAnual"
     :prediccion-anual-total="tiendaStore.prediccionAnualTotal"
@@ -118,7 +124,7 @@ const handleAjustesClick = () => {
     :tapb="tiendaStore.tapb"
     :tendencia-estimacion="tiendaStore.tendenciaEstimacion"
     :confiabilidad="tiendaStore.confiabilidad"></PredictionsDashboard>
-    <PredictionsDashboardPlaceholder v-if="!tiendaStore.productoData"></PredictionsDashboardPlaceholder>
+    <PredictionsDashboardPlaceholder v-if="(!tiendaStore.productoData && mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW) || (!temporadaStore.productoData && mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW)"></PredictionsDashboardPlaceholder>
   </div>
 </template>
 

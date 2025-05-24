@@ -3,17 +3,28 @@ import Combox from "@/components/Combox.vue";
 import ComboboxFamilia from "@/components/ComboboxFamilia.vue";
 import { useMainStateStore } from '../store/main'
 import { useTiendaStore } from '../store/tiendaStore';
+import { useTemporadaStore } from '../store/temporadaStore';
 import { CONSTANTS } from '../constants/constants';
 
 const mainStateStore = useMainStateStore();
 const tiendaStore = useTiendaStore();
+const temporadaStore = useTemporadaStore();
 
 const handleTiendaChange = (event) => {
     tiendaStore.tiendaSeleccionada = event;
 }
 
-const handleFamiliaChange = (event) => {
+const handleTiendaFamiliaChange = (event) => {
     tiendaStore.familiaSeleccionada = event;
+}
+
+const handleTemporadaChange = (event) => {
+    temporadaStore.temporadaSeleccionada = event;
+    console.log(temporadaStore.temporadaSeleccionada)
+}
+
+const handleTemporadaFamiliaChange = (event) => {
+    temporadaStore.familiaSeleccionada = event;
 }
 </script>
 
@@ -38,35 +49,41 @@ const handleFamiliaChange = (event) => {
                 </p>
             </div>
         </div>
+        <h2>Familia</h2>
+        <div class="familia_div">
+            <ComboboxFamilia
+            :data_list="tiendaStore.familias"
+            @on-change="handleTiendaFamiliaChange">
+            </ComboboxFamilia>
+        </div>
     </span>
 
     <span v-if="mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW">
         <h2>Temporada</h2>
         <div class="data_div">
             <Combox
-            :data_list="tiendaStore.tiendas"
-            @on-change="handleTiendaChange">
+            :data_list="temporadaStore.temporadas"
+            @on-change="handleTemporadaChange">
             </Combox>
             <div class="subdata_div">
                 <p>Periodo:
-                    <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ tiendaStore.tiendaSeleccionadaProvincia }}</span>
+                    <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ temporadaStore.nombreTemporada }}</span>
                     <span v-else class="placeholder_span">SEPTIEMBRE-FEBRERO</span>
                 </p>
-                <p>Año:
-                    <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ new Date().getFullYear() }}</span>
+                <p>Meses:
+                    <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ temporadaStore.mesesTemporada }}</span>
                     <span v-else class="placeholder_span">2025</span>
                 </p>
             </div>
         </div>
+        <h2>Familia</h2>
+        <div class="familia_div">
+            <ComboboxFamilia
+            :data_list="tiendaStore.familias"
+            @on-change="handleTemporadaFamiliaChange">
+            </ComboboxFamilia>
+        </div>
     </span>
-
-    <h2>Familia</h2>
-    <div class="familia_div">
-        <ComboboxFamilia
-        :data_list="tiendaStore.familias"
-        @on-change="handleFamiliaChange">
-        </ComboboxFamilia>
-    </div>
 
     <div class="slot">
         <slot></slot>

@@ -4,6 +4,12 @@
     <button class="sidebar-btn icon-btn top-btn" @click="$emit('toggle-sidebar')">
       <img src="/src/assets/grafica.png" alt="Panel" class="icon-img" />
     </button>
+    <button class="sidebar-btn icon-btn top-btn" @click="$emit('tienda-click')"> <!--Botón de predicciones por tienda-->
+      <img src="/src/assets/grafica.png" alt="Panel" class="icon-img" />
+    </button>
+    <button class="sidebar-btn icon-btn top-btn" @click="$emit('temporada-click')"> <!--Botón de predicciones por temporada-->
+      <img src="/src/assets/grafica.png" alt="Panel" class="icon-img" />
+    </button>
     <div class="spacer"></div>
     <!-- Botón de ajustes (icono ajustes) -->
     <button class="sidebar-btn icon-btn bottom-btn" @click="$emit('ajustes-click')">
