@@ -10,6 +10,7 @@ export const useTiendaStore = defineStore('tiendaStore', () => {
     const familiaSeleccionada = ref("");
 
     const productoData = ref(null);
+    const prediccionAnual = ref(null);
     const prediccionAnualTotal = ref(null);
     const prediccionMensual = ref(null);
     const tapb = ref(null);
@@ -18,7 +19,7 @@ export const useTiendaStore = defineStore('tiendaStore', () => {
     const ventasAnteriores = ref(null);
 
     return { tiendas, tiendaSeleccionada, tiendaSeleccionadaProvincia, tiendaSeleccionadaCodigoPostal, familias, familiaSeleccionada,
-        productoData, prediccionAnualTotal, prediccionMensual, tapb, tendenciaEstimacion, confiabilidad, ventasAnteriores
+        productoData, prediccionAnual, prediccionAnualTotal, prediccionMensual, tapb, tendenciaEstimacion, confiabilidad, ventasAnteriores
      };
 })
 
