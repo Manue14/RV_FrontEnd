@@ -8,20 +8,19 @@ export const useTemporadaStore = defineStore('temporadaStore', () => {
     const familiaSeleccionada = ref("");
 
     const temporadaNombre = computed(() => {
-        if (temporadaSeleccionada.value === 'PV') {
+        if (temporadaSeleccionada.value == 'PV') {
             return 'PRIMAVERA-VERANO';
-        } else if (temporadaSeleccionada.value === 'OI') {
+        } else if (temporadaSeleccionada.value == 'OI') {
             return 'OTOÑO-INVIERNO';
         } else {
             return '';
         }
     });
 
-    const mesesTemporada = computed(() => {
-        const temporada = useTemporadaStore.temporadaSeleccionada;
-        if (temporada === 'PV') {
+    const temporadaMeses = computed(() => {
+        if (temporadaSeleccionada.value == 'PV') {
             return 'MARZO-SEPTIEMBRE';
-        } else if (temporada === 'OI') {
+        } else if (temporadaSeleccionada.value == 'OI') {
             return 'SEPTIEMBRE-FEBRERO';
         } else {
             return '';
@@ -37,7 +36,7 @@ export const useTemporadaStore = defineStore('temporadaStore', () => {
     const confiabilidad = ref(null);
     const ventasAnteriores = ref(null);
 
-    return { temporadas, temporadaSeleccionada, familias, familiaSeleccionada, temporadaNombre, mesesTemporada,
+    return { temporadas, temporadaSeleccionada, familias, familiaSeleccionada, temporadaNombre, temporadaMeses,
         productoData, prediccionAnual, prediccionAnualTotal, prediccionMensual, tapb, tendenciaEstimacion, confiabilidad, ventasAnteriores
      };
 })

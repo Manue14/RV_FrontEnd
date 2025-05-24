@@ -5,10 +5,14 @@ import { useMainStateStore } from '../store/main'
 import { useTiendaStore } from '../store/tiendaStore';
 import { useTemporadaStore } from '../store/temporadaStore';
 import { CONSTANTS } from '../constants/constants';
+import { ref } from 'vue';
 
 const mainStateStore = useMainStateStore();
 const tiendaStore = useTiendaStore();
 const temporadaStore = useTemporadaStore();
+
+const nombreTemporada = ref("");
+const mesesTemporada = ref("");
 
 const handleTiendaChange = (event) => {
     tiendaStore.tiendaSeleccionada = event;
@@ -20,7 +24,8 @@ const handleTiendaFamiliaChange = (event) => {
 
 const handleTemporadaChange = (event) => {
     temporadaStore.temporadaSeleccionada = event;
-    console.log(temporadaStore.temporadaSeleccionada)
+    nombreTemporada.value = temporadaStore.temporadaNombre;
+    mesesTemporada.value = temporadaStore.temporadaMeses;
 }
 
 const handleTemporadaFamiliaChange = (event) => {
@@ -67,11 +72,11 @@ const handleTemporadaFamiliaChange = (event) => {
             </Combox>
             <div class="subdata_div">
                 <p>Periodo:
-                    <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ temporadaStore.nombreTemporada }}</span>
+                    <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ nombreTemporada }}</span>
                     <span v-else class="placeholder_span">SEPTIEMBRE-FEBRERO</span>
                 </p>
                 <p>Meses:
-                    <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ temporadaStore.mesesTemporada }}</span>
+                    <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ mesesTemporada }}</span>
                     <span v-else class="placeholder_span">2025</span>
                 </p>
             </div>
@@ -79,7 +84,7 @@ const handleTemporadaFamiliaChange = (event) => {
         <h2>Familia</h2>
         <div class="familia_div">
             <ComboboxFamilia
-            :data_list="tiendaStore.familias"
+            :data_list="temporadaStore.familias"
             @on-change="handleTemporadaFamiliaChange">
             </ComboboxFamilia>
         </div>

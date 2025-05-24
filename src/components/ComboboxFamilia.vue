@@ -1,5 +1,8 @@
 <script setup>
+import { CONSTANTS } from '@/constants/constants';
+import { useMainStateStore } from '../store/main';
 import { useTiendaStore } from '../store/tiendaStore';
+import { useTemporadaStore } from '../store/temporadaStore';
 defineProps({
   data_list: {
     type: JSON,
@@ -12,15 +15,32 @@ const handleChange = (event) => {
   emit('onChange', event.target.value);
 };
 
+const mainStateStore = useMainStateStore();
 const tiendaStore = useTiendaStore();
+const temporadaStore = useTemporadaStore();
 </script>
 
 <template>
-  <select @change="handleChange" :disabled="tiendaStore.tiendaSeleccionada == ''" v-model="tiendaStore.familiaSeleccionada">
+  <span v-if="mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW">
+    <select @change="handleChange"
+      :disabled="tiendaStore.tiendaSeleccionada == ''"
+      v-model="tiendaStore.familiaSeleccionada">
     <option value="">Seleccione una opción</option>
     <option v-for="(value, key) in data_list"
             :key="key" :value="value">{{value}}</option>
   </select>
+  </span>
+
+  <span v-if="mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW">
+    <select @change="handleChange"
+      :disabled="temporadaStore.temporadaSeleccionada == ''"
+      v-model="temporadaStore.familiaSeleccionada">
+    <option value="">Seleccione una opción</option>
+    <option v-for="(value, key) in data_list"
+            :key="key" :value="value">{{value}}</option>
+  </select>
+  </span>
+  
 </template>
 
 <style scoped>

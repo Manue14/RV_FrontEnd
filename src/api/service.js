@@ -29,8 +29,16 @@ class ApiService {
         return response.data;
     }
 
-    async predict(tienda, familia) {
-        const response = await this.connectorInstance.get("/predict", {
+    async getTopFamilias() {
+        const response = await this.connectorInstance.get("/top_familias")
+            .catch((error) => {
+                console.log(error)
+            })
+        return response.data;
+    }
+
+    async predictByTienda(tienda, familia) {
+        const response = await this.connectorInstance.get("/predict_by_tienda", {
             params: { tienda, familia }
         })
             .then(function (response) {
@@ -38,6 +46,21 @@ class ApiService {
             })
             .catch(function (error) {
                 console.log(error);
+                return {data: null};
+            });
+        return response.data;
+    }
+
+    async predictByTemporada(temporada, familia) {
+        const response = await this.connectorInstance.get("/predict_by_temporada", {
+            params: { temporada, familia }
+        })
+            .then(function (response) {
+                return response;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return {data: null};
             });
         return response.data;
     }

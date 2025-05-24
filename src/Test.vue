@@ -21,6 +21,11 @@ const chartData = ref({
   datasets: []
 })
 
+watch(() => mainStateStore.selectedView, () => {
+  tiendaStore.tiendaSeleccionada = "";
+  temporadaStore.temporadaSeleccionada = "";
+})
+
 watch(() => tiendaStore.tiendaSeleccionada, async() => {
   if (tiendaStore.tiendaSeleccionada == "") {
     tiendaStore.tiendaSeleccionadaProvincia = "";
@@ -36,15 +41,22 @@ watch(() => tiendaStore.tiendaSeleccionada, async() => {
 })
 
 const enviarDatos = async () => {
-  if (!tiendaStore.tiendaSeleccionada || !tiendaStore.familiaSeleccionada) {
-    alert('Por favor, seleccione tanto la tienda como la provincia');
+  
+  mainStateStore.waitingForApi = true;
+  if (mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW) {
+    await predecirPorTienda();
+  } else if (mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW) {
+    await predecirPorTemporada();
+  }
+  mainStateStore.waitingForApi = false;
+};
+
+const predecirPorTienda = async () => {
+  const data = await apiService.predictByTienda(tiendaStore.tiendaSeleccionada, tiendaStore.familiaSeleccionada);
+
+  if (data == null) {
     return;
   }
-  mainStateStore.waitingForApi = true;
-  const data = await apiService.predict(tiendaStore.tiendaSeleccionada, tiendaStore.familiaSeleccionada);
-  mainStateStore.waitingForApi = false;
-  
-  // Actualizar variables con los datos adicionales
   tiendaStore.productoData = data.producto;
   tiendaStore.prediccionAnual = data.prediccion_anual;
   tiendaStore.prediccionAnualTotal = data.prediccion_anual_total;
@@ -53,10 +65,27 @@ const enviarDatos = async () => {
   tiendaStore.confiabilidad = data.confiabilidad;
   tiendaStore.prediccionMensual = data.prediccion_mensual;
   tiendaStore.ventasAnteriores = data.ventas_anteriores;
-};
+}
+
+const predecirPorTemporada = async () => {
+  const data = await apiService.predictByTemporada(temporadaStore.temporadaSeleccionada, temporadaStore.familiaSeleccionada);
+
+  if (data == null) {
+    return;
+  }
+  temporadaStore.productoData = data.producto;
+  temporadaStore.prediccionAnual = data.prediccion_anual;
+  temporadaStore.prediccionAnualTotal = data.prediccion_anual_total;
+  temporadaStore.tapb = data.tapb;
+  temporadaStore.tendenciaEstimacion = data.tendencia_estimacion;
+  temporadaStore.confiabilidad = data.confiabilidad;
+  temporadaStore.prediccionMensual = data.prediccion_mensual;
+  temporadaStore.ventasAnteriores = data.ventas_anteriores;
+}
 
 onMounted(async () => {
   tiendaStore.tiendas = await apiService.getTiendas();
+  temporadaStore.familias = await apiService.getTopFamilias();
 });
 
 function toggleSidebar() {
@@ -103,14 +132,12 @@ const handleAjustesClick = () => {
       <aside v-if="mainStateStore.isSideBarToggled" class="drawer-sidebar">
         <Sidebar>
           <div style="min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-            <button :disabled="tiendaStore.tiendaSeleccionada == null || tiendaStore.familiaSeleccionada == ''"
+            <button
+              :disabled="(mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW && (tiendaStore.tiendaSeleccionada == null || tiendaStore.familiaSeleccionada == '')) || (mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW && (temporadaStore.temporadaSeleccionada == null || temporadaStore.familiaSeleccionada == ''))"
               @click="enviarDatos"
               class="btn-enviar">
               Enviar selección
             </button>
-            <div v-if="tiendaStore.tiendaSeleccionada == '' || tiendaStore.familiaSeleccionada == ''" style="margin-top: 1rem; color: #aaa; text-align: center;">
-              Selecciona una tienda y una familia para continuar.
-            </div>
           </div>
         </Sidebar>
       </aside>
@@ -124,6 +151,15 @@ const handleAjustesClick = () => {
     :tapb="tiendaStore.tapb"
     :tendencia-estimacion="tiendaStore.tendenciaEstimacion"
     :confiabilidad="tiendaStore.confiabilidad"></PredictionsDashboard>
+    <PredictionsDashboard v-if="temporadaStore.productoData && mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW"
+    :ventas-anteriores="temporadaStore.ventasAnteriores"
+    :prediccion-anual="temporadaStore.prediccionAnual"
+    :prediccion-anual-total="temporadaStore.prediccionAnualTotal"
+    :prediccion-mensual="temporadaStore.prediccionMensual"
+    :producto-data="temporadaStore.productoData"
+    :tapb="temporadaStore.tapb"
+    :tendencia-estimacion="temporadaStore.tendenciaEstimacion"
+    :confiabilidad="temporadaStore.confiabilidad"></PredictionsDashboard>
     <PredictionsDashboardPlaceholder v-if="(!tiendaStore.productoData && mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW) || (!temporadaStore.productoData && mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW)"></PredictionsDashboardPlaceholder>
   </div>
 </template>
@@ -175,7 +211,7 @@ const handleAjustesClick = () => {
 .btn-enviar {
   margin-top: 1.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(90deg, #45FF9A 0%, #5A6BFF 100%);
+  background: linear-gradient(0deg, #45FF9A 0%, #5A6BFF 100%);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -187,13 +223,13 @@ const handleAjustesClick = () => {
 }
 
 .btn-enviar:hover {
-  background: linear-gradient(90deg, #5A6BFF 0%, #45FF9A 100%);
+  background: linear-gradient(18deg, #5A6BFF 0%, #45FF9A 100%);
   box-shadow: 0 4px 16px 0 rgba(90,107,255,0.25);
 }
 
 .btn-enviar:disabled {
   cursor: unset;
-  background: linear-gradient(90deg, #93f5bf 0%, #9fa7f5 100%);
+  background: linear-gradient(0deg, #93f5bf 0%, #9fa7f5 100%);
   opacity: 0.7;
 }
 </style>
