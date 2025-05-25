@@ -5,15 +5,9 @@ const props = defineProps({
 });
 
 const productosOrdenados = computed(() => {
-  return Object.values(props.productos)
-    .sort((a, b) => b.ventas - a.ventas)
-    .slice(0, 5); // Solo top 5
+  return Object.entries(props.productos)
+    .sort((a, b) => b[1].ventas - a[1].ventas);
 });
-
-const calcularAncho = (ventas) => {
-  const max = Math.max(...productosOrdenados.value.map(p => p.ventas));
-  return Math.round((ventas / max) * 100);
-};
 
 
 </script>
@@ -22,12 +16,12 @@ const calcularAncho = (ventas) => {
   <div class="top-productos-vertical">
     <h2>Top 5 Productos Más Vendidos</h2>
     <ul class="lista-productos">
-      <li v-for="(producto, index) in productosOrdenados" :key="index" class="item-producto">
+      <li v-for="([etiqueta, producto], index) in productosOrdenados" :key="etiqueta" class="item-producto">
         <span class="ranking-numero">#{{ index + 1 }}</span>
         <img :src="producto.img_link" alt="Imagen" class="producto-imagen" />
         <div class="producto-detalles">
           <h3>{{ producto.nombre }}</h3>
-          <p><strong>Etiqueta:</strong> {{ producto.etiqueta }}</p>
+          <p><strong>Etiqueta:</strong> {{ etiqueta }}</p>
           <p class="ventas">🛒 {{ producto.ventas }} ventas</p>
         </div>
       </li>
