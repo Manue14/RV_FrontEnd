@@ -19,7 +19,6 @@ class ApiService {
             params: { idTienda }
         })
             .then(function (response) {
-                console.log(response.data);
                 return response;
             })
             .catch(function (error) {
@@ -31,6 +30,14 @@ class ApiService {
 
     async getTopFamilias() {
         const response = await this.connectorInstance.get("/top_familias")
+            .catch((error) => {
+                console.log(error)
+            })
+        return response.data;
+    }
+
+    async getTopProductos() {
+        const response = await this.connectorInstance.get("/top_productos")
             .catch((error) => {
                 console.log(error)
             })

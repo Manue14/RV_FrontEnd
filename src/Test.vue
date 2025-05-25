@@ -10,6 +10,7 @@ import NavigationSidebar from './components/NavigationSidebar.vue';
 import PredictionsDashboard from './components/PredictionsDashboard.vue';
 import PredictionsDashboardPlaceholder from './components/PredictionsDashboardPlaceholder.vue';
 import LoadingOverlay from './components/LoadingOverlay.vue';
+import TopProductosDashboard from './components/TopProductosDashboard.vue';
 
 const apiService = getApiService();
 const mainStateStore = useMainStateStore();
@@ -86,6 +87,7 @@ const predecirPorTemporada = async () => {
 onMounted(async () => {
   tiendaStore.tiendas = await apiService.getTiendas();
   temporadaStore.familias = await apiService.getTopFamilias();
+  mainStateStore.topProductos = await apiService.getTopProductos();
 });
 
 function toggleSidebar() {
@@ -111,6 +113,10 @@ const handleTemporadaClick = () => {
   mainStateStore.selectedView = CONSTANTS.TEMPORADA_VIEW;
 };
 
+const handleTopProductosClick = () => {
+  mainStateStore.selectedView = CONSTANTS.TOP_PRODUCTOS_VIEW;
+}
+
 const handleAjustesClick = () => {
   console.log('Botón Ajustes clickeado');
   // Aquí puedes añadir la lógica para abrir ajustes
@@ -124,12 +130,13 @@ const handleAjustesClick = () => {
       @toggle-sidebar="toggleSidebar"
       @tienda-click="handleTiendaClick"
       @temporada-click="handleTemporadaClick"
+      @top-click="handleTopProductosClick"
       @dashboard-click="handleRefrescarClick"
       @modo-noche-click="handleNotificacionesClick"
       @ajustes-click="handleAjustesClick"
     />
     <transition name="drawer">
-      <aside v-if="mainStateStore.isSideBarToggled" class="drawer-sidebar">
+      <aside v-if="mainStateStore.isSideBarToggled && mainStateStore.selectedView != CONSTANTS.TOP_PRODUCTOS_VIEW" class="drawer-sidebar">
         <Sidebar>
           <div style="min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
             <button
@@ -161,6 +168,7 @@ const handleAjustesClick = () => {
     :tendencia-estimacion="temporadaStore.tendenciaEstimacion"
     :confiabilidad="temporadaStore.confiabilidad"></PredictionsDashboard>
     <PredictionsDashboardPlaceholder v-if="(!tiendaStore.productoData && mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW) || (!temporadaStore.productoData && mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW)"></PredictionsDashboardPlaceholder>
+    <TopProductosDashboard :productos="mainStateStore.topProductos" v-if="mainStateStore.selectedView == CONSTANTS.TOP_PRODUCTOS_VIEW"></TopProductosDashboard>
   </div>
 </template>
 

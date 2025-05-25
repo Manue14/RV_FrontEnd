@@ -196,7 +196,6 @@ function mountYearlyGraph() {
       const nextYear = new Date().getFullYear() + 1
 
       const ventas_anuales_acumuladas = Object.entries(props.prediccionAnual).reduce((acc, [key, value]) => {
-        console.log(value)
         if (key.substring(0, 4) !== nextYear.toString()) {
           acc += parseInt(value);
         }

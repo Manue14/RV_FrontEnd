@@ -3,7 +3,7 @@ import { CONSTANTS } from '@/constants/constants'
 
 const axiosInstance = axios.create({
     baseURL: CONSTANTS.API_BASE_URL,
-    timeout: 500000
+    timeout: 900000
 })
 
 axiosInstance.interceptors.request.use(function (config) {
