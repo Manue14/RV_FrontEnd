@@ -19,7 +19,6 @@ class ApiService {
             params: { idTienda }
         })
             .then(function (response) {
-                console.log(response.data);
                 return response;
             })
             .catch(function (error) {
@@ -29,18 +28,48 @@ class ApiService {
         return response.data;
     }
 
-    async predict(provincia, familia) {
-        this.connectorInstance.post("/predict", {
-            provincia: provincia,
-            familia: familia
+    async getTopFamilias() {
+        const response = await this.connectorInstance.get("/top_familias")
+            .catch((error) => {
+                console.log(error)
+            })
+        return response.data;
+    }
+
+    async getTopProductos() {
+        const response = await this.connectorInstance.get("/top_productos")
+            .catch((error) => {
+                console.log(error)
+            })
+        return response.data;
+    }
+
+    async predictByTienda(tienda, familia) {
+        const response = await this.connectorInstance.get("/predict_by_tienda", {
+            params: { tienda, familia }
         })
             .then(function (response) {
-                console.log("Datos enviados axios: " + response);
+                return response;
             })
             .catch(function (error) {
                 console.log(error);
+                return {data: null};
             });
+        return response.data;
+    }
 
+    async predictByTemporada(temporada, familia) {
+        const response = await this.connectorInstance.get("/predict_by_temporada", {
+            params: { temporada, familia }
+        })
+            .then(function (response) {
+                return response;
+            })
+            .catch(function (error) {
+                console.log(error);
+                return {data: null};
+            });
+        return response.data;
     }
 }
 

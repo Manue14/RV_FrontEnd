@@ -2,10 +2,11 @@ import axios from 'axios'
 import { CONSTANTS } from '@/constants/constants'
 
 const axiosInstance = axios.create({
-    baseURL: CONSTANTS.API_BASE_URL
+    baseURL: CONSTANTS.API_BASE_URL,
+    timeout: 900000
 })
 
-axios.interceptors.request.use(function (config) {
+axiosInstance.interceptors.request.use(function (config) {
     // Do something before request is sent - ¿Tokens y headers?
     return config;
   }, function (error) {
