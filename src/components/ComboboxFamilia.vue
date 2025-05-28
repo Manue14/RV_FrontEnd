@@ -25,7 +25,7 @@ const temporadaStore = useTemporadaStore();
     <select @change="handleChange"
       :disabled="tiendaStore.tiendaSeleccionada == ''"
       v-model="tiendaStore.familiaSeleccionada">
-    <option value="">Seleccione una opción</option>
+    <option value="">Selecione unha opción</option>
     <option v-for="(value, key) in data_list"
             :key="key" :value="value">{{value}}</option>
   </select>

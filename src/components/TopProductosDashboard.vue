@@ -14,7 +14,7 @@ const productosOrdenados = computed(() => {
 
 <template>
   <div class="top-productos-vertical">
-    <h2>Top 5 Productos Más Vendidos</h2>
+    <h2>Top 5 Produtos Máis Vendidos</h2>
     <ul class="lista-productos">
       <li v-for="([etiqueta, producto], index) in productosOrdenados" :key="etiqueta" class="item-producto">
         <span class="ranking-numero">#{{ index + 1 }}</span>
@@ -22,7 +22,7 @@ const productosOrdenados = computed(() => {
         <div class="producto-detalles">
           <h3>{{ producto.nombre }}</h3>
           <p><strong>Etiqueta:</strong> {{ etiqueta }}</p>
-          <p class="ventas">🛒 {{ producto.ventas }} ventas</p>
+          <p class="ventas">🛒 {{ producto.ventas }} vendas</p>
         </div>
       </li>
     </ul>

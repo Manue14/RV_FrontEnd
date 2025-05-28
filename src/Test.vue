@@ -94,17 +94,6 @@ function toggleSidebar() {
   mainStateStore.isSideBarToggled = !mainStateStore.isSideBarToggled;
 }
 
-// Handlers para eventos del NavigationSidebar
-const handleDashboardClick = () => {
-  console.log('Botón Dashboard clickeado');
-  // Aquí puedes añadir la lógica para navegar o realizar acciones
-};
-
-const handleModoNocheClick = () => {
-  console.log('Botón Modo noche clickeado');
-  // Aquí puedes añadir la lógica para cambiar el modo noche
-};
-
 const handleTiendaClick = () => {
   mainStateStore.selectedView = CONSTANTS.TIENDA_VIEW;
 };
@@ -131,9 +120,6 @@ const handleAjustesClick = () => {
       @tienda-click="handleTiendaClick"
       @temporada-click="handleTemporadaClick"
       @top-click="handleTopProductosClick"
-      @dashboard-click="handleRefrescarClick"
-      @modo-noche-click="handleNotificacionesClick"
-      @ajustes-click="handleAjustesClick"
     />
     <transition name="drawer">
       <aside v-if="mainStateStore.isSideBarToggled && mainStateStore.selectedView != CONSTANTS.TOP_PRODUCTOS_VIEW" class="drawer-sidebar">
@@ -219,7 +205,7 @@ const handleAjustesClick = () => {
 .btn-enviar {
   margin-top: 1.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(0deg, #45FF9A 0%, #5A6BFF 100%);
+  background: linear-gradient(0deg, #45FF9A 0%,#46C4BD 50%, #34A4EE 100%);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -231,7 +217,7 @@ const handleAjustesClick = () => {
 }
 
 .btn-enviar:hover {
-  background: linear-gradient(18deg, #5A6BFF 0%, #45FF9A 100%);
+  background: linear-gradient(18deg, #45FF9A 0%, #68c5bf 50%, #2d9fea 100%);
   box-shadow: 0 4px 16px 0 rgba(90,107,255,0.25);
 }
 

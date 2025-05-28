@@ -56,7 +56,7 @@ const chartOptions = {
     },
     title: {
       display: true,
-      text: 'Predicción de Ventas por Mes',
+      text: 'Predición de Vendas por Mes',
       color: '#fff',
       font: {
         size: 16
@@ -101,7 +101,7 @@ const barChartOptions = {
     },
     title: {
       display: true,
-      text: 'Total Ventas por Año',
+      text: 'Total Vendas por Ano',
       color: '#fff',
       font: {
         size: 16
@@ -137,7 +137,7 @@ function mountGraph() {
   mountYearlyGraph();
   
   // Crear etiquetas con mes y año
-  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const meses = ['Xaneiro', 'Febreiro', 'Marzo', 'Abril', 'Maio', 'Xuño', 'Xullo', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Decembro'];
     
   // Generar etiquetas para el rango 2019-2025
   const labels = [];
@@ -154,7 +154,7 @@ function mountGraph() {
     labels: labels,
     datasets: [
       {
-        label: 'Ventas anteriores',
+        label: 'Vendas anteriores',
         data: props.ventasAnteriores,
         borderColor: '#5A6BFF',
         backgroundColor: 'rgba(90, 107, 255, 0.1)',
@@ -163,7 +163,7 @@ function mountGraph() {
         fill: true
       },
       {
-        label: 'Predicciones',
+        label: 'Predicións',
         data: props.prediccionMensual,
         borderColor: '#45FF9A',
         backgroundColor: 'rgba(69, 255, 154, 0.1)',
@@ -209,14 +209,14 @@ function mountYearlyGraph() {
     labels,
     datasets: [
       {
-        label: 'Ventas por Año',
+        label: 'Vendas por Ano',
         data,
         backgroundColor: 'rgba(90, 107, 255, 0.6)',
         borderColor: '#5A6BFF',
         borderWidth: 1
       },
       {
-        label: 'Predicción Anual Total',
+        label: 'Predición Anual Total',
         data: predictionBarsData,
         borderColor: '#45FF9A',
         backgroundColor: 'rgba(69, 255, 154, 0.1)',
@@ -247,17 +247,17 @@ mountGraph();
       <div class="dashboard-panel-row">
         <div class="dashboard-panel dashboard-panel-lg">
           <div class="data-item">
-            <span class="data-label">Producto:</span>
+            <span class="data-label">Produto:</span>
             <span class="data-value">{{ productoData }}</span>
           </div>
           <div class="data-item">
-            <span class="data-label">Predicción Anual Total:</span>
+            <span class="data-label">Predición Anual Total:</span>
             <span class="data-value highlight">{{ prediccionAnualTotal }}</span>
           </div>
 
-          <h3>Estadísticas de Predicción Anual</h3>
+          <h3>Estatísticas de Predición Anual</h3>
           <div class="data-item">
-            <span class="data-label">TAPB:</span>
+            <span class="data-label">APB:</span>
             <span class="data-value highlight">{{ tapb.toFixed(2) }}%</span>
           </div>
           <div class="data-item">
@@ -265,7 +265,7 @@ mountGraph();
             <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ capitalize(tendenciaEstimacion) }}</span>
           </div>
           <div class="data-item">
-            <span class="data-label">Confiabilidad:</span>
+            <span class="data-label">Fiabilidade:</span>
             <span class="data-value highlight">{{ capitalize(confiabilidad) }}</span>
           </div>
 

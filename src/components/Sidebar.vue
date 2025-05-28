@@ -36,7 +36,7 @@ const handleTemporadaFamiliaChange = (event) => {
 <template>
   <div class="sidebar">
     <span v-if="mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW">
-        <h2>Tienda</h2>
+        <h2>Tenda</h2>
         <div class="data_div">
             <Combox
             :data_list="tiendaStore.tiendas"
