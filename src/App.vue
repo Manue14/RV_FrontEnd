@@ -1,16 +1,11 @@
 <script setup>
-import NavigationSidebar from './components/NavigationSidebar.vue';
+// No necesitamos lógica adicional aquí
 </script>
 
 <template>
-  <div class="flex">
-    <NavigationSidebar />
-    <main class="flex-1 p-4">
-      <router-view></router-view>
-    </main>
-  </div>
+  <router-view></router-view>
 </template>
 
 <style>
-/* Tus estilos globales aquí */
+/* Estilos globales si los necesitas */
 </style>

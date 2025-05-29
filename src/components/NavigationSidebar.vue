@@ -34,11 +34,26 @@
       </svg>
     </button>
     <div class="spacer"></div>
+    <button class="sidebar-btn icon-btn bottom-btn" @click="logout" title="Cerrar sesión">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="#34A4EE">
+        <path d="M16 13v-2H7V8l-5 4 5 4v-3z"/>
+        <path d="M20 3h-8c-1.1 0-2 .9-2 2v4h2V5h8v14h-8v-4h-2v4c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+      </svg>
+    </button>
   </nav>
 </template>
 
 <script setup>
-// No se necesitan props ni imports de iconos
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+const logout = async () => {
+  await authStore.logout()
+  router.push('/login')
+}
 </script>
 
 <style scoped>

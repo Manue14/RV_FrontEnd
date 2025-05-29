@@ -7,69 +7,69 @@ class ApiService {
     }
 
     async getTiendas() {
-        const response = await this.connectorInstance.get("/tiendas")
-            .catch((error) => {
-                console.log(error)
-            })
-        return response.data;
+        try {
+            const response = await this.connectorInstance.get("/tiendas");
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener tiendas:", error);
+            return [];
+        }
     }
 
     async getTienda(idTienda) {
-        const response = await this.connectorInstance.get("/datos_tienda", {
-            params: { idTienda }
-        })
-            .then(function (response) {
-                return response;
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-
-        return response.data;
+        try {
+            const response = await this.connectorInstance.get("/datos_tienda", {
+                params: { idTienda }
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener datos de la tienda:", error);
+            return null;
+        }
     }
 
     async getTopFamilias() {
-        const response = await this.connectorInstance.get("/top_familias")
-            .catch((error) => {
-                console.log(error)
-            })
-        return response.data;
+        try {
+            const response = await this.connectorInstance.get("/top_familias");
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener top familias:", error);
+            return [];
+        }
     }
 
     async getTopProductos() {
-        const response = await this.connectorInstance.get("/top_productos")
-            .catch((error) => {
-                console.log(error)
-            })
-        return response.data;
+        try {
+            const response = await this.connectorInstance.get("/top_productos");
+            return response.data;
+        } catch (error) {
+            console.error("Error al obtener top productos:", error);
+            return [];
+        }
     }
 
     async predictByTienda(tienda, familia) {
-        const response = await this.connectorInstance.get("/predict_by_tienda", {
-            params: { tienda, familia }
-        })
-            .then(function (response) {
-                return response;
-            })
-            .catch(function (error) {
-                console.log(error);
-                return {data: null};
+        try {
+            const response = await this.connectorInstance.get("/predict_by_tienda", {
+                params: { tienda, familia }
             });
-        return response.data;
+            return response.data;
+        } catch (error) {
+            console.error("Error al predecir por tienda:", error);
+            return null;
+        }
     }
 
     async predictByTemporada(temporada, familia) {
-        const response = await this.connectorInstance.get("/predict_by_temporada", {
-            params: { temporada, familia }
-        })
-            .then(function (response) {
-                return response;
-            })
-            .catch(function (error) {
-                console.log(error);
-                return {data: null};
+        try {
+            const response = await this.connectorInstance.get("/predict_by_temporada", {
+                params: { temporada, familia }
             });
-        return response.data;
+            return response.data;
+        } catch (error) {
+            console.error("Error al predecir por temporada:", error);
+            return null;
+        }
     }
 }
 
