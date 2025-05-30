@@ -14,6 +14,8 @@
 
   /* Colores auxiliares */
   --color-border-light: #3A3C52;
+
+  --color-sidebar-icon: #5A6BFF;
 }
 
 body.light-theme {

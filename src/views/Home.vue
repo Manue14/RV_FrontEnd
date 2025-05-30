@@ -2,7 +2,7 @@
   <LoadingOverlay :is-loading="mainStateStore.waitingForApi"></LoadingOverlay>
   <div class="dashboard-root">
     <NavigationSidebar 
-      @toggle-sidebar="toggleSidebar"
+      @home-click="handleHomeClick"
       @tienda-click="handleTiendaClick"
       @temporada-click="handleTemporadaClick"
       @top-click="handleTopProductosClick"
@@ -15,7 +15,7 @@
       </button>
     </NavigationSidebar>
     <transition name="drawer">
-      <aside v-if="mainStateStore.isSideBarToggled && mainStateStore.selectedView != CONSTANTS.TOP_PRODUCTOS_VIEW" class="drawer-sidebar">
+      <aside v-if="mainStateStore.selectedView != CONSTANTS.TOP_PRODUCTOS_VIEW && mainStateStore.selectedView != CONSTANTS.HOME_VIEW" class="drawer-sidebar">
         <Sidebar>
           <div style="min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
             <button
@@ -28,6 +28,7 @@
         </Sidebar>
       </aside>
     </transition>
+    <LandingPage v-if="mainStateStore.selectedView == CONSTANTS.HOME_VIEW"></LandingPage>
     <PredictionsDashboard v-if="tiendaStore.productoData && mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW"
     :ventas-anteriores="tiendaStore.ventasAnteriores"
     :prediccion-anual="tiendaStore.prediccionAnual"
@@ -64,6 +65,7 @@ import PredictionsDashboard from '../components/PredictionsDashboard.vue';
 import PredictionsDashboardPlaceholder from '../components/PredictionsDashboardPlaceholder.vue';
 import LoadingOverlay from '../components/LoadingOverlay.vue';
 import TopProductosDashboard from '../components/TopProductosDashboard.vue';
+import LandingPage from '@/components/LandingPage.vue';
 import { useAuthStore } from '../stores/auth';
 import { useRouter } from 'vue-router';
 
@@ -146,9 +148,9 @@ onMounted(async () => {
   mainStateStore.topProductos = await apiService.getTopProductos();
 });
 
-function toggleSidebar() {
-  mainStateStore.isSideBarToggled = !mainStateStore.isSideBarToggled;
-}
+const handleHomeClick = () => {
+  mainStateStore.selectedView = CONSTANTS.HOME_VIEW;
+};
 
 const handleTiendaClick = () => {
   mainStateStore.selectedView = CONSTANTS.TIENDA_VIEW;

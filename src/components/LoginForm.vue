@@ -3,51 +3,18 @@
     <div class="login-card">
       <h2 class="login-title">Iniciar sesión</h2>
       <form class="login-form" @submit.prevent="handleLogin">
-        <div class="login-input-group">
-          <input
-            id="email"
-            v-model="email"
-            type="email"
-            required
-            class="login-input"
-            placeholder="Correo electrónico"
-          />
-        </div>
-        <div class="login-input-group">
-          <input
-            id="password"
-            v-model="password"
-            type="password"
-            required
-            class="login-input"
-            placeholder="Contraseña"
-          />
-        </div>
-        <button
-          type="submit"
-          :disabled="loading"
-          class="login-btn"
-        >
-          {{ loading ? 'Cargando...' : 'Iniciar sesión' }}
-        </button>
-        <div v-if="error" class="login-error login-error-access">
-          <strong>Acceso denegado:</strong> {{ error }}
-        </div>
-        <div class="login-divider">
-          <span>o</span>
-        </div>
         <div class="login-socials">
           <button type="button" class="login-social-btn google" @click="loginWithGoogle">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="login-social-icon" />
             Iniciar con Google
           </button>
+          <div class="login-divider">
+          <span>o</span>
+        </div>
           <button type="button" class="login-social-btn github" @click="loginWithGithub">
             <img src="https://www.svgrepo.com/show/512317/github-142.svg" alt="GitHub" class="login-social-icon" />
             Iniciar con GitHub
           </button>
-        </div>
-        <div class="login-register">
-          <router-link to="/register">¿No tienes una cuenta? <span>Regístrate</span></router-link>
         </div>
       </form>
     </div>
@@ -213,7 +180,6 @@ const loginWithGithub = async () => {
   border: none;
   font-size: 1rem;
   font-weight: 500;
-  cursor: not-allowed;
   background: #fff;
   color: #23243a;
   transition: background 0.2s, color 0.2s;

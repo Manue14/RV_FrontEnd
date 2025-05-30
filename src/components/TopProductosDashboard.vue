@@ -43,7 +43,7 @@ h2 {
   text-align: center;
   margin-bottom: 40px;
   font-size: 2rem;
-  color: #00ffab;
+  color: #5A6BFF;
 }
 
 .lista-productos {
@@ -70,7 +70,7 @@ h2 {
 .ranking-numero {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #00ffab;
+  color: #5A6BFF;
   margin-right: 20px;
   width: 40px;
   text-align: center;
@@ -100,13 +100,13 @@ h2 {
 
 .ventas {
   font-weight: bold;
-  color: #00ffab;
+  color: #5A6BFF;
 }
 
 .item-producto:first-of-type {
   background: linear-gradient(135deg, #1a1f35, #0d1c26);
-  border: 2px solid #00ffab;
-  box-shadow: 0 0 20px rgba(0, 255, 171, 0.4);
+  border: 2px solid #5A6BFF;
+  box-shadow: 0 0 20px #4a5dff;
 }
 
 .item-producto {
