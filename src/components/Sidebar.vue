@@ -5,7 +5,7 @@ import { useMainStateStore } from '../store/main'
 import { useTiendaStore } from '../store/tiendaStore';
 import { useTemporadaStore } from '../store/temporadaStore';
 import { CONSTANTS } from '../constants/constants';
-import { ref } from 'vue';
+import { ref, onUpdated } from 'vue';
 
 const mainStateStore = useMainStateStore();
 const tiendaStore = useTiendaStore();
@@ -40,7 +40,6 @@ const handleTemporadaFamiliaChange = (event) => {
         <div class="data_div">
             <Combox
             :data_list="tiendaStore.tiendas"
-            v-model="tiendaStore.tiendaSeleccionada"
             @on-change="handleTiendaChange">
             </Combox>
             <div class="subdata_div">

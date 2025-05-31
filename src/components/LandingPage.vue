@@ -1,11 +1,50 @@
 <template>
     <div class="landing">
-        <h1>Benvido</h1>
+        <div class="logo-container">
+            <img src="../assets/logo.png" class="logo"/>
+        </div>
+        <div class="text-container">
+            <p class="name">ɅNTICIPɅ</p>
+            <p class="desc">Tecendo Datos</p>
+        </div>
     </div>
 </template>
 
 <style scoped>
-    h1 {
-        color: white;
+    .landing {
+        width: 100%;
+    }
+
+    .logo {
+        width: 40rem;
+    }
+
+    .name {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 8rem;
+        font-weight: 300;
+        letter-spacing: 2.3rem;
+        margin-bottom: 2rem;
+    }
+
+    .desc {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 2rem;
+    }
+
+    .logo-container {
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 2%;
+        width: fit-content;
+    }
+
+    .text-container {
+        margin: auto;
+        width: fit-content;
+    }
+
+    .text-container > p {
+        text-align: center;
     }
 </style>
