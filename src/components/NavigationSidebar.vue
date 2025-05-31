@@ -60,7 +60,7 @@ const logout = async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #23243a;
+  background: var(--color-background-secondary);
   height: 99%;
   width: 120px;
   padding: 2rem 0 2rem 0;
@@ -79,11 +79,10 @@ const logout = async () => {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  transition: background 0.2s;
   margin: 0.5rem 0;
 }
 .icon-btn:hover {
-  background: #35365a;
+  background: var(--color-accent-grey);
 }
 .icon-img {
   width: 40px;
@@ -97,8 +96,5 @@ const logout = async () => {
 }
 .sidebar-btn {
   margin-bottom: 3em;
-}
-.color-fill {
-  fill: var(--color-sidebar-icon);
 }
 </style> 

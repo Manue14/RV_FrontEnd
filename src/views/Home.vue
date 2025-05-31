@@ -219,7 +219,7 @@ const handleLogout = async () => {
 .btn-enviar {
   margin-top: 1.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(0deg, #45FF9A 0%,#46C4BD 50%, #34A4EE 100%);
+  background: linear-gradient(0deg, var(--color-accent-light-green) 0%, var(--color-accent-green) 50%, var(--color-accent-dark-green) 100%);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -227,17 +227,17 @@ const handleLogout = async () => {
   font-size: 1.1rem;
   font-weight: 600;
   box-shadow: 0 2px 8px 0 rgba(90,107,255,0.15);
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: 0.2s, box-shadow 0.2s;
 }
 
 .btn-enviar:hover {
-  background: linear-gradient(18deg, #45FF9A 0%, #68c5bf 50%, #2d9fea 100%);
+  background: linear-gradient(18deg, var(--color-accent-light-green) 0%, var(--color-accent-green) 50%, var(--color-accent-dark-green) 100%);
   box-shadow: 0 4px 16px 0 rgba(90,107,255,0.25);
 }
 
 .btn-enviar:disabled {
   cursor: unset;
-  background: linear-gradient(0deg, #93f5bf 0%, #9fa7f5 100%);
+  background: linear-gradient(0deg, var(--color-accent-light-green) 0%, #9fa7f5 100%);
   opacity: 0.7;
 }
 

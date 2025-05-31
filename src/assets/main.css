@@ -3,14 +3,18 @@
 :root {
   /* Colores principales */
   --color-background: #1A1C2E;
+  --color-background-secondary: #23243a;
   --color-panel: #2B2E43;
   --color-text-primary: #FFFFFF;
-  --color-text-secondary: #A5A8C5;
+  --color-text-secondary: #aaa;
 
   /* Colores de acento */
-  --color-accent-green: #45FF9A;
+  --color-accent-light-green: #45FF9A;
+  --color-accent-green: #46C4BD;
+  --color-accent-dark-green: #34A4EE;
   --color-accent-blue: #5A6BFF;
   --color-accent-purple: #8A64FF;
+  --color-accent-grey: #35365a;
 
   /* Colores auxiliares */
   --color-border-light: #3A3C52;
@@ -27,7 +31,7 @@ body.light-theme {
 }
 
 #app {
-  background-color: var(--color-background);
+  background-color: var(--color-background); /*Make so all components inherit background color from this*/
   color: var(--color-text-primary);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: normal;
@@ -44,40 +48,37 @@ body {
   min-height: 100vh;
 }
 
-/* Tarjetas o paneles */
-.panel {
-  background-color: var(--color-panel);
-  border: 1px solid var(--color-border-light);
-  padding: 1rem;
+.combobox {
+  background-color: #1e1e2f;
+  color: #e0f7fa;
+  border: 1px solid #3a3a4d;
   border-radius: 8px;
-}
-
-/* Textos secundarios */
-.text-secondary {
-  color: var(--color-text-secondary);
-}
-
-/* Botones de acción */
-.button-primary {
-  background-color: var(--color-accent-blue);
-  color: var(--color-text-primary);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  width: 95%;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
   cursor: pointer;
+  box-shadow: 0 0 0 2px transparent;
 }
 
-.button-primary:hover {
-  background-color: var(--color-accent-purple);
+.combobox:focus {
+  border-color: var(--color-accent-green);
 }
 
-/* Indicadores o etiquetas verdes */
-.indicator {
-  color: var(--color-accent-green);
+.combobox option {
+  background-color: #1e1e2f;
+  color: #e0f7fa;
 }
 
-/* Líneas divisorias */
-.divider {
-  border-top: 1px solid var(--color-border-light);
-  margin: 1rem 0;
+.combobox:disabled {
+  background-color: #2e2e3e;
+  color: #777b8a;
+  border-color: #3a3a4d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.color-fill {
+  fill: var(--color-sidebar-icon);
 }

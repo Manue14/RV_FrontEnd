@@ -334,7 +334,7 @@ mountGraph();
 
 .data-label {
   font-size: 1rem;
-  color: #aaa;
+  color: var(--color-text-secondary);
   font-weight: 400;
 }
 
