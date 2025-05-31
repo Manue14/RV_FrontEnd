@@ -82,8 +82,7 @@ const chartData = ref({
 })
 
 watch(() => mainStateStore.selectedView, () => {
-  tiendaStore.tiendaSeleccionada = "";
-  temporadaStore.temporadaSeleccionada = "";
+  
 })
 
 watch(() => tiendaStore.tiendaSeleccionada, async() => {
