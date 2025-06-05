@@ -1,5 +1,5 @@
 export const CONSTANTS = {
-    API_BASE_URL: "http://20.74.84.177/api",
+    API_BASE_URL: "http://127.0.0.1:5000",
     TIENDA_VIEW: 0,
     TEMPORADA_VIEW: 1,
     TOP_PRODUCTOS_VIEW: 2,

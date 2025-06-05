@@ -109,7 +109,7 @@ const loginWithGithub = async () => {
   align-items: center;
   text-align: center;
   margin: 0.5rem 0 0.5rem 0;
-  color: var(--color-text-secondary);
+  color: var(--color-contrast-secondary);
   font-size: 0.95rem;
 }
 .login-divider::before, .login-divider::after {
@@ -135,17 +135,9 @@ const loginWithGithub = async () => {
   border: none;
   font-size: 1rem;
   font-weight: 500;
-  background: white;
-  color: var(--color-background-secondary);
+  background: var(--color-contrast);
+  color: var(--color-neutral);
   transition: 0.2s, color 0.2s;
-}
-.login-social-btn.google {
-  border: 1.5px solid var(--color-accent-dark-green);
-}
-.login-social-btn.github {
-  border: 1.5px solid var(--color-accent-grey);
-  background: var(--color-background-secondary);
-  color: white;
 }
 .login-social-icon {
   width: 22px;

@@ -7,24 +7,16 @@
       @temporada-click="handleTemporadaClick"
       @top-click="handleTopProductosClick"
     >
-      <button
-        @click="handleLogout"
-        class="logout-button"
-      >
-        Cerrar sesión
-      </button>
     </NavigationSidebar>
     <transition name="drawer">
       <aside v-if="mainStateStore.selectedView != CONSTANTS.TOP_PRODUCTOS_VIEW && mainStateStore.selectedView != CONSTANTS.HOME_VIEW" class="drawer-sidebar">
         <Sidebar>
-          <div style="min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
-            <button
-              :disabled="(mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW && (tiendaStore.tiendaSeleccionada == null || tiendaStore.familiaSeleccionada == '')) || (mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW && (temporadaStore.temporadaSeleccionada == null || temporadaStore.familiaSeleccionada == ''))"
-              @click="enviarDatos"
-              class="btn-enviar">
-              Enviar selección
-            </button>
-          </div>
+          <button
+            :disabled="(mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW && (tiendaStore.tiendaSeleccionada == '' || tiendaStore.familiaSeleccionada == '')) || (mainStateStore.selectedView == CONSTANTS.TEMPORADA_VIEW && (temporadaStore.temporadaSeleccionada == '' || temporadaStore.familiaSeleccionada == ''))"
+            @click="enviarDatos"
+            class="btn-enviar">
+            Enviar selección
+          </button>
         </Sidebar>
       </aside>
     </transition>
@@ -53,7 +45,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { getApiService } from '../api/service';
 import { useMainStateStore } from '../store/main';
 import { useTiendaStore } from '../store/tiendaStore';
@@ -66,20 +58,11 @@ import PredictionsDashboardPlaceholder from '../components/PredictionsDashboardP
 import LoadingOverlay from '../components/LoadingOverlay.vue';
 import TopProductosDashboard from '../components/TopProductosDashboard.vue';
 import LandingPage from '@/components/LandingPage.vue';
-import { useAuthStore } from '../stores/auth';
-import { useRouter } from 'vue-router';
 
 const apiService = getApiService();
 const mainStateStore = useMainStateStore();
 const tiendaStore = useTiendaStore();
 const temporadaStore = useTemporadaStore();
-const auth = useAuthStore();
-const router = useRouter();
-
-const chartData = ref({
-  labels: [],
-  datasets: []
-})
 
 watch(() => mainStateStore.selectedView, () => {
   
@@ -161,15 +144,6 @@ const handleTemporadaClick = () => {
 
 const handleTopProductosClick = () => {
   mainStateStore.selectedView = CONSTANTS.TOP_PRODUCTOS_VIEW;
-}
-
-const handleLogout = async () => {
-  try {
-    await auth.logout();
-    router.push('/login');
-  } catch (error) {
-    console.error('Error al cerrar sesión:', error);
-  }
 };
 </script>
 
@@ -179,8 +153,8 @@ const handleLogout = async () => {
   min-height: 100vh;
   height: 100vh;
   width: 100vw;
-  background: radial-gradient(ellipse at 60% 40%, #23243a 60%, #18192b 100%), 
-              linear-gradient(135deg, #23243a 0%, #2b2e44 100%);
+  background: radial-gradient(ellipse at 60% 40%, var(--color-background-secondary) 60%, var(--color-background) 100%), 
+              linear-gradient(135deg, var(--color-background-secondary) 0%, var(--color-background) 100%);
   padding: 1.2rem;
   box-sizing: border-box;
   align-items: stretch;
@@ -190,8 +164,7 @@ const handleLogout = async () => {
   width: 340px;
   max-width: 90vw;
   height: 100%;
-  background: rgba(40, 42, 65, 0.7);
-  box-shadow: 2px 0 16px rgba(0,0,0,0.25);
+  background: var(--color-panel);
   border-radius: 18px 0 0 18px;
   padding: 2rem 1.5rem 1.5rem 1.5rem;
   overflow-y: auto;
@@ -201,7 +174,7 @@ const handleLogout = async () => {
   flex-direction: column;
   margin-left: 0.5rem;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--color-border);
 }
 
 .drawer-enter-active, .drawer-leave-active {
@@ -220,19 +193,17 @@ const handleLogout = async () => {
   margin-top: 1.5rem;
   padding: 0.75rem 1.5rem;
   background: linear-gradient(0deg, var(--color-accent-light-green) 0%, var(--color-accent-green) 50%, var(--color-accent-dark-green) 100%);
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 600;
-  box-shadow: 0 2px 8px 0 rgba(90,107,255,0.15);
   transition: 0.2s, box-shadow 0.2s;
 }
 
 .btn-enviar:hover {
   background: linear-gradient(18deg, var(--color-accent-light-green) 0%, var(--color-accent-green) 50%, var(--color-accent-dark-green) 100%);
-  box-shadow: 0 4px 16px 0 rgba(90,107,255,0.25);
 }
 
 .btn-enviar:disabled {
@@ -241,18 +212,31 @@ const handleLogout = async () => {
   opacity: 0.7;
 }
 
-.logout-button {
-  padding: 0.5rem 1rem;
-  background: #ff4444;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.2s;
-}
-
-.logout-button:hover {
-  background: #ff6666;
+@media screen and (max-width: 1800px) {
+  .dashboard-root {
+    flex-direction: column;
+  }
+  .drawer-sidebar {
+    width: 100%;
+    height: fit-content;
+    border-radius: 5px;
+    margin: auto;
+    padding: 1rem 1rem 1rem 1rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .drawer-enter-active, .drawer-leave-active {
+    transition: all 0.3s cubic-bezier(.4,0,.2,1);
+  }
+  .drawer-enter-from, .drawer-leave-to {
+    transform: translateY(-100%);
+  }
+  .drawer-enter-to, .drawer-leave-from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .btn-enviar {
+    margin-top: unset;
+  }
 }
 </style> 

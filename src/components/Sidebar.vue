@@ -43,11 +43,11 @@ const handleTemporadaFamiliaChange = (event) => {
             @on-change="handleTiendaChange">
             </Combox>
             <div class="subdata_div">
-                <p>Provincia:
+                <p class="provincia-paragraph">Provincia:
                     <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ tiendaStore.tiendaSeleccionadaProvincia }}</span>
                     <span v-else class="placeholder_span">PONTEVEDRA</span>
                 </p>
-                <p>CP:
+                <p class="postal-paragraph">CP:
                     <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ tiendaStore.tiendaSeleccionadaCodigoPostal }}</span>
                     <span v-else class="placeholder_span">00000</span>
                 </p>
@@ -70,11 +70,11 @@ const handleTemporadaFamiliaChange = (event) => {
             @on-change="handleTemporadaChange">
             </Combox>
             <div class="subdata_div">
-                <p>Periodo:
+                <p class="period-paragraph">Periodo:
                     <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ nombreTemporada }}</span>
                     <span v-else class="placeholder_span">SEPTIEMBRE-FEBRERO</span>
                 </p>
-                <p>Meses:
+                <p class="month-paragraph">Meses:
                     <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ mesesTemporada }}</span>
                     <span v-else class="placeholder_span">2025</span>
                 </p>
@@ -114,5 +114,44 @@ const handleTemporadaFamiliaChange = (event) => {
 .slot {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+@media screen and (max-width: 1800px) {
+  .sidebar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .sidebar > span {
+        display: flex;
+        align-items: center;
+    }
+    .slot {
+       width: fit-content;
+       height: fit-content;
+    }
+    .data_div {
+        padding-left: unset;
+        margin-bottom: unset;
+        display: flex;
+        align-items: center;
+        margin-right: 8%;
+    }
+    .familia_div {
+        padding-left: unset;
+        margin-bottom: unset;
+        width: 50%;
+    }
+    .subdata_div {
+        margin-top: unset;
+        margin-left: 6%;
+    }
+    .postal-paragraph, .period-paragraph, .month-paragraph {
+        display: none;
+    }
 }
 </style>

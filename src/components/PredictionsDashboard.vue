@@ -164,7 +164,7 @@ function mountGraph() {
       },
       {
         label: 'Predicións',
-        data: props.prediccionMensual,
+        data: {"2025-02": 35, "2025-03": 73, "2025-04": 50, "2025-05": 51, "2025-06": 101, "2025-07": 77, "2025-08": 29, "2025-09": 60, "2025-10": 67, "2025-11": 56, "2025-12": 81, "2026-01": 135},
         borderColor: '#45FF9A',
         backgroundColor: 'rgba(69, 255, 154, 0.1)',
         borderWidth: 2,
@@ -252,7 +252,7 @@ mountGraph();
           </div>
           <div class="data-item">
             <span class="data-label">Predición Anual Total:</span>
-            <span class="data-value highlight">{{ prediccionAnualTotal }}</span>
+            <span class="data-value highlight">{{ prediccionAnualTotal }} Unidades</span>
           </div>
 
           <h3>Estatísticas de Predición Anual</h3>
@@ -299,15 +299,14 @@ mountGraph();
 
 .dashboard-panel {
   /* Efecto glass y fondo */
-  background: rgba(40, 42, 65, 0.7);
+  background: var(--color-panel);
   border-radius: 18px;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18), 0 1.5px 8px 0 rgba(90,107,255,0.08);
   padding: 1.1rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--color-border);
 }
 
 .dashboard-panel-lg {
@@ -329,31 +328,46 @@ mountGraph();
   justify-content: space-between;
   align-items: center;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .data-label {
   font-size: 1rem;
-  color: var(--color-text-secondary);
+  color: var(--color-contrast-secondary);
   font-weight: 400;
 }
 
 .data-value {
   font-size: 1.1rem;
-  color: #fff;
   font-weight: 600;
 }
 
 .data-value.highlight {
-  color: #45FF9A; /* Color llamativo para valores importantes */
+  color: var(--color-accent-light-green); /* Color llamativo para valores importantes */
   font-size: 1.4rem;
 }
 
 .trend-up {
-  color: #45FF9A; /* Color verde para tendencia positiva */
+  color: var(--color-accent-light-green); /* Color verde para tendencia positiva */
 }
 
 .trend-down {
-  color: #FF6B6B; /* Color rojo para tendencia negativa */
+  color: var(--color-accent-red); /* Color rojo para tendencia negativa */
+}
+
+@media screen and (max-width: 1800px) {
+  .data-label {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+.data-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+.data-value.highlight {
+    font-size: 0.9rem;
+  }
 }
 </style>
