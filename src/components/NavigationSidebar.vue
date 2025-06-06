@@ -1,5 +1,5 @@
 <template>
-  <nav class="sidebar-nav">
+  <nav class="sidebar-nav" v-bind:class="{ 'sidebar-nav-overflow' : mainStateStore.selectedView == CONSTANTS.HOME_VIEW || mainStateStore.selectedView == CONSTANTS.TOP_PRODUCTOS_VIEW }">
     <!-- Botón de abrir menú lateral (icono grafica) -->
     <button class="sidebar-btn icon-btn top-btn" @click="$emit('home-click')">
       <svg data-name="Layer 1" id="Layer_1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="color-fill">
@@ -45,9 +45,12 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { CONSTANTS } from '@/constants/constants'
+import { useMainStateStore } from '@/store/main'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const mainStateStore = useMainStateStore()
 
 const logout = async () => {
   await authStore.logout()
@@ -64,6 +67,11 @@ const logout = async () => {
   height: 99%;
   width: 120px;
   padding: 2rem 0 2rem 0;
+}
+.sidebar-nav-overflow {
+  position: fixed;
+  top: 2;
+  left: 2;
 }
 .spacer {
   flex: 1 1 auto;
@@ -105,6 +113,11 @@ const logout = async () => {
     height: 5%;
     border-radius: 5px;
     justify-content: space-evenly;
+  }
+  .sidebar-nav-overflow {
+    position: unset;
+    top: unset;
+    left: unset;
   }
   .sidebar-btn {
     margin-bottom: unset;
