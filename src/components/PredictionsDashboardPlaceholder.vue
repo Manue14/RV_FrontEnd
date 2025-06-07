@@ -43,12 +43,13 @@
   margin-left: 0.5rem;
   height: 100%;
   justify-content: space-between;
+  height: 96vh;
 }
 
 .dashboard-panel-row {
   display: flex;
   gap: 1.2rem;
-  height: 38%;
+  height: 45%;
 }
 
 .dashboard-panel {
@@ -70,10 +71,9 @@
 }
 
 .dashboard-panel-xl {
-  height: 48%;
+  height: 55%;
   flex: 1;
   width: 100%;
-  min-height: 0;
 }
 
 .data-item {
@@ -93,5 +93,17 @@
 .data-value {
   font-size: 1.1rem;
   font-weight: 600;
+}
+
+@media screen and (max-width: 1890px) {
+  .dashboard-panel-xl, .chart-container {
+    height: 55vh;
+  }
+  .dashboard-panel-row {
+    height: 25vh;
+  }
+  .dashboard-panel-lg {
+    height: 100%;
+  }
 }
 </style>

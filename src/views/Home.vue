@@ -151,7 +151,7 @@ const handleTopProductosClick = () => {
 .dashboard-root {
   display: flex;
   min-height: 100vh;
-  height: 100vh;
+  height: fit-content;
   width: 100vw;
   background: radial-gradient(ellipse at 60% 40%, var(--color-background-secondary) 60%, var(--color-background) 100%), 
               linear-gradient(135deg, var(--color-background-secondary) 0%, var(--color-background) 100%);
@@ -166,7 +166,8 @@ const handleTopProductosClick = () => {
   height: 100%;
   background: var(--color-panel);
   border-radius: 18px 0 0 18px;
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
   overflow-y: auto;
   position: relative;
   z-index: 1001;
@@ -212,7 +213,7 @@ const handleTopProductosClick = () => {
   opacity: 0.7;
 }
 
-@media screen and (max-width: 1800px) {
+@media screen and (max-width: 1890px) {
   .dashboard-root {
     flex-direction: column;
   }

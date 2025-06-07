@@ -97,6 +97,9 @@ const handleTemporadaFamiliaChange = (event) => {
 </template>
 
 <style scoped>
+.sidebar {
+    height: 96vh;
+}
 .data_div, .familia_div {
     padding-left: 1%;
     margin-bottom: 20%;
@@ -119,12 +122,17 @@ const handleTemporadaFamiliaChange = (event) => {
     width: 100%;
 }
 
-@media screen and (max-width: 1800px) {
+h2 {
+    margin-top: 2rem;
+}
+
+@media screen and (max-width: 1890px) {
   .sidebar {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        height: unset;
     }
     .sidebar > span {
         display: flex;
@@ -152,6 +160,9 @@ const handleTemporadaFamiliaChange = (event) => {
     }
     .postal-paragraph, .period-paragraph, .month-paragraph {
         display: none;
+    }
+    h2 {
+        margin-top: unset;
     }
 }
 </style>

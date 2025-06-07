@@ -64,7 +64,7 @@ const logout = async () => {
   flex-direction: column;
   align-items: center;
   background: var(--color-background-secondary);
-  height: 99%;
+  height: 96vh;
   width: 120px;
   padding: 2rem 0 2rem 0;
 }
@@ -106,7 +106,7 @@ const logout = async () => {
   margin-bottom: 3em;
 }
 
-@media screen and (max-width: 1800px) {
+@media screen and (max-width: 1890px) {
   .sidebar-nav {
     flex-direction: row;
     width: 100%;

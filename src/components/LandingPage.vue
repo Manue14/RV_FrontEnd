@@ -16,7 +16,7 @@
     }
 
     .logo {
-        width: 40rem;
+        width: 30vw;
     }
 
     .name {

@@ -83,3 +83,7 @@ body {
 .color-fill {
   fill: var(--color-accent-blue);
 }
+
+html, body, #app {
+  height: fit-content;
+}

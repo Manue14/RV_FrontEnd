@@ -246,27 +246,31 @@ mountGraph();
   <div class="main-content">
       <div class="dashboard-panel-row">
         <div class="dashboard-panel dashboard-panel-lg">
-          <div class="data-item">
-            <span class="data-label">Produto:</span>
-            <span class="data-value">{{ productoData }}</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Predición Anual Total:</span>
-            <span class="data-value highlight">{{ prediccionAnualTotal }} Unidades</span>
+          <div>
+            <div class="data-item">
+              <span class="data-label">Produto:</span>
+              <span class="data-value">{{ productoData }}</span>
+            </div>
+            <div class="data-item">
+              <span class="data-label">Predición Anual Total:</span>
+              <span class="data-value highlight">{{ prediccionAnualTotal }} Unidades</span>
+            </div>
           </div>
 
-          <h3>Estatísticas de Predición Anual</h3>
-          <div class="data-item">
-            <span class="data-label">APB:</span>
-            <span class="data-value highlight">{{ tapb.toFixed(2) }}%</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Tendencia Estimación:</span>
-            <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ capitalize(tendenciaEstimacion) }}</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Fiabilidade:</span>
-            <span class="data-value highlight">{{ capitalize(confiabilidad) }}</span>
+          <div>
+            <h3>Estatísticas de Predición Anual</h3>
+            <div class="data-item">
+              <span class="data-label">APB:</span>
+              <span class="data-value highlight">{{ tapb.toFixed(2) }}%</span>
+            </div>
+            <div class="data-item">
+              <span class="data-label">Tendencia Estimación:</span>
+              <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ capitalize(tendenciaEstimacion) }}</span>
+            </div>
+            <div class="data-item">
+              <span class="data-label">Fiabilidade:</span>
+              <span class="data-value highlight">{{ capitalize(confiabilidad) }}</span>
+            </div>
           </div>
 
         </div>
@@ -289,12 +293,13 @@ mountGraph();
   margin-left: 0.5rem;
   height: 100%;
   justify-content: space-between;
+  height: 96vh;
 }
 
 .dashboard-panel-row {
   display: flex;
   gap: 1.2rem;
-  height: 38%;
+  height: 45%;
 }
 
 .dashboard-panel {
@@ -316,10 +321,9 @@ mountGraph();
 }
 
 .dashboard-panel-xl {
-  height: 48%;
+  height: 55%;
   flex: 1;
   width: 100%;
-  min-height: 0;
 }
 
 .data-item {
@@ -355,19 +359,25 @@ mountGraph();
   color: var(--color-accent-red); /* Color rojo para tendencia negativa */
 }
 
-@media screen and (max-width: 1800px) {
-  .data-label {
-    font-size: 0.9rem;
-    font-weight: 400;
+@media screen and (max-width: 1890px) {
+  .dashboard-panel-xl, .chart-container {
+    height: 55vh;
   }
-
-.data-value {
-    font-size: 0.9rem;
-    font-weight: 600;
+  .dashboard-panel-row {
+    height: 25vh;
   }
-
-.data-value.highlight {
-    font-size: 0.9rem;
+  .dashboard-panel-lg {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .dashboard-panel-lg > div {
+    width: 50%;
+  }
+  .dashboard-panel-lg > div:first-of-type {
+    height: fit-content;
+    margin-right: 1.5rem;
   }
 }
 </style>
