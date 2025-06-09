@@ -5,7 +5,7 @@ import { useMainStateStore } from '../store/main'
 import { useTiendaStore } from '../store/tiendaStore';
 import { useTemporadaStore } from '../store/temporadaStore';
 import { CONSTANTS } from '../constants/constants';
-import { ref } from 'vue';
+import { ref, onUpdated } from 'vue';
 
 const mainStateStore = useMainStateStore();
 const tiendaStore = useTiendaStore();
@@ -36,19 +36,18 @@ const handleTemporadaFamiliaChange = (event) => {
 <template>
   <div class="sidebar">
     <span v-if="mainStateStore.selectedView == CONSTANTS.TIENDA_VIEW">
-        <h2>Tienda</h2>
+        <h2>Tenda</h2>
         <div class="data_div">
             <Combox
             :data_list="tiendaStore.tiendas"
-            v-model="tiendaStore.tiendaSeleccionada"
             @on-change="handleTiendaChange">
             </Combox>
             <div class="subdata_div">
-                <p>Provincia:
+                <p class="provincia-paragraph">Provincia:
                     <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ tiendaStore.tiendaSeleccionadaProvincia }}</span>
                     <span v-else class="placeholder_span">PONTEVEDRA</span>
                 </p>
-                <p>CP:
+                <p class="postal-paragraph">CP:
                     <span v-if="tiendaStore.tiendaSeleccionada != ''">{{ tiendaStore.tiendaSeleccionadaCodigoPostal }}</span>
                     <span v-else class="placeholder_span">00000</span>
                 </p>
@@ -71,11 +70,11 @@ const handleTemporadaFamiliaChange = (event) => {
             @on-change="handleTemporadaChange">
             </Combox>
             <div class="subdata_div">
-                <p>Periodo:
+                <p class="period-paragraph">Periodo:
                     <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ nombreTemporada }}</span>
                     <span v-else class="placeholder_span">SEPTIEMBRE-FEBRERO</span>
                 </p>
-                <p>Meses:
+                <p class="month-paragraph">Meses:
                     <span v-if="temporadaStore.temporadaSeleccionada != ''">{{ mesesTemporada }}</span>
                     <span v-else class="placeholder_span">2025</span>
                 </p>
@@ -98,6 +97,9 @@ const handleTemporadaFamiliaChange = (event) => {
 </template>
 
 <style scoped>
+.sidebar {
+    height: 96vh;
+}
 .data_div, .familia_div {
     padding-left: 1%;
     margin-bottom: 20%;
@@ -115,5 +117,52 @@ const handleTemporadaFamiliaChange = (event) => {
 .slot {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+h2 {
+    margin-top: 2rem;
+}
+
+@media screen and (max-width: 1890px) {
+  .sidebar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: unset;
+    }
+    .sidebar > span {
+        display: flex;
+        align-items: center;
+    }
+    .slot {
+       width: fit-content;
+       height: fit-content;
+    }
+    .data_div {
+        padding-left: unset;
+        margin-bottom: unset;
+        display: flex;
+        align-items: center;
+        margin-right: 8%;
+    }
+    .familia_div {
+        padding-left: unset;
+        margin-bottom: unset;
+        width: 50%;
+    }
+    .subdata_div {
+        margin-top: unset;
+        margin-left: 6%;
+    }
+    .postal-paragraph, .period-paragraph, .month-paragraph {
+        display: none;
+    }
+    h2 {
+        margin-top: unset;
+    }
 }
 </style>

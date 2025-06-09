@@ -40,14 +40,10 @@ export default {
 <template>
   <div class="chart-container">
     <Line 
-      v-if="isDataValid"
       id="my-chart-id" 
       :data="chartData" 
       :options="chartOptions" 
     />
-    <div v-else class="loading-state">
-      Cargando datos...
-    </div>
   </div>
 </template>
 
@@ -56,13 +52,5 @@ export default {
   position: relative;
   height: 100%;
   width: 95%;
-}
-
-.loading-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  color: #666;
 }
 </style>

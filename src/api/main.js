@@ -3,27 +3,33 @@ import { CONSTANTS } from '@/constants/constants'
 
 const axiosInstance = axios.create({
     baseURL: CONSTANTS.API_BASE_URL,
-    timeout: 900000
+    timeout: 900000,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
 })
 
 axiosInstance.interceptors.request.use(function (config) {
-    // Do something before request is sent - ¿Tokens y headers?
-    return config;
-  }, function (error) {
-    // Do something with request error
-    console.log("Request error: " + error);
-    return Promise.reject(error);
-  });
+    console.log('Enviando petición a:', config.url)
+    return config
+}, function (error) {
+    console.error("Error en la petición:", error)
+    return Promise.reject(error)
+})
 
 axiosInstance.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-  }, function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    console.log("Response error: " + error);
-    return Promise.reject(error);
-  });
+    console.log('Respuesta recibida:', response.status)
+    return response
+}, function (error) {
+    if (error.response) {
+        console.error("Error en la respuesta:", error.response.status, error.response.data)
+    } else if (error.request) {
+        console.error("No se recibió respuesta:", error.request)
+    } else {
+        console.error("Error en la configuración:", error.message)
+    }
+    return Promise.reject(error)
+})
 
 export default axiosInstance

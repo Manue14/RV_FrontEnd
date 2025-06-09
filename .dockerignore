@@ -1,0 +1,10 @@
+# No traigas tu node_modules local
+node_modules/
+
+# No traigas dist (se genera en build)
+dist/
+
+# Metadatos de editor/sistema
+.DS_Store
+.vscode/
+*.log

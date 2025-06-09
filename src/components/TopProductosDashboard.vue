@@ -14,7 +14,7 @@ const productosOrdenados = computed(() => {
 
 <template>
   <div class="top-productos-vertical">
-    <h2>Top 5 Productos Más Vendidos</h2>
+    <h2>Top 5 Produtos Máis Vendidos</h2>
     <ul class="lista-productos">
       <li v-for="([etiqueta, producto], index) in productosOrdenados" :key="etiqueta" class="item-producto">
         <span class="ranking-numero">#{{ index + 1 }}</span>
@@ -22,7 +22,7 @@ const productosOrdenados = computed(() => {
         <div class="producto-detalles">
           <h3>{{ producto.nombre }}</h3>
           <p><strong>Etiqueta:</strong> {{ etiqueta }}</p>
-          <p class="ventas">🛒 {{ producto.ventas }} ventas</p>
+          <p class="ventas">🛒 {{ producto.ventas }} vendas</p>
         </div>
       </li>
     </ul>
@@ -34,16 +34,15 @@ const productosOrdenados = computed(() => {
   padding: 40px;
   max-width: 1000px;
   margin: auto;
-  background-color: #0b0f1a;
+  background-color: var(--color-background);
   border-radius: 16px;
-  color: white;
 }
 
 h2 {
   text-align: center;
   margin-bottom: 40px;
   font-size: 2rem;
-  color: #00ffab;
+  color: var(--color-accent-blue);
 }
 
 .lista-productos {
@@ -55,11 +54,10 @@ h2 {
 .item-producto {
   display: flex;
   align-items: center;
-  background-color: #151b2e;
+  background-color: var(--color-background-secondary);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
   transition: transform 0.2s;
 }
 
@@ -70,7 +68,7 @@ h2 {
 .ranking-numero {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #00ffab;
+  color: var(--color-accent-blue);
   margin-right: 20px;
   width: 40px;
   text-align: center;
@@ -100,13 +98,13 @@ h2 {
 
 .ventas {
   font-weight: bold;
-  color: #00ffab;
+  color: var(--color-accent-blue);
 }
 
 .item-producto:first-of-type {
-  background: linear-gradient(135deg, #1a1f35, #0d1c26);
-  border: 2px solid #00ffab;
-  box-shadow: 0 0 20px rgba(0, 255, 171, 0.4);
+  background: var(--color-background);
+  border: 2px solid var(--color-accent-blue);
+  box-shadow: 0 0 20px var(--color-accent-blue);
 }
 
 .item-producto {

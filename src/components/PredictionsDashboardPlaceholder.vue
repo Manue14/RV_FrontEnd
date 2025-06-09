@@ -43,25 +43,25 @@
   margin-left: 0.5rem;
   height: 100%;
   justify-content: space-between;
+  height: 96vh;
 }
 
 .dashboard-panel-row {
   display: flex;
   gap: 1.2rem;
-  height: 38%;
+  height: 45%;
 }
 
 .dashboard-panel {
   /* Efecto glass y fondo */
-  background: rgba(40, 42, 65, 0.7);
+  background: var(--color-panel);
   border-radius: 18px;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18), 0 1.5px 8px 0 rgba(90,107,255,0.08);
   padding: 1.1rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--color-border);
 }
 
 .dashboard-panel-lg {
@@ -71,10 +71,9 @@
 }
 
 .dashboard-panel-xl {
-  height: 48%;
+  height: 55%;
   flex: 1;
   width: 100%;
-  min-height: 0;
 }
 
 .data-item {
@@ -87,13 +86,24 @@
 
 .data-label {
   font-size: 1rem;
-  color: #aaa;
+  color: var(--color-contrast-secondary);
   font-weight: 400;
 }
 
 .data-value {
   font-size: 1.1rem;
-  color: #fff;
   font-weight: 600;
+}
+
+@media screen and (max-width: 1890px) {
+  .dashboard-panel-xl, .chart-container {
+    height: 55vh;
+  }
+  .dashboard-panel-row {
+    height: 25vh;
+  }
+  .dashboard-panel-lg {
+    height: 100%;
+  }
 }
 </style>

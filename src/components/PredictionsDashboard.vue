@@ -56,7 +56,7 @@ const chartOptions = {
     },
     title: {
       display: true,
-      text: 'Predicción de Ventas por Mes',
+      text: 'Predición de Vendas por Mes',
       color: '#fff',
       font: {
         size: 16
@@ -101,7 +101,7 @@ const barChartOptions = {
     },
     title: {
       display: true,
-      text: 'Total Ventas por Año',
+      text: 'Total Vendas por Ano',
       color: '#fff',
       font: {
         size: 16
@@ -137,7 +137,7 @@ function mountGraph() {
   mountYearlyGraph();
   
   // Crear etiquetas con mes y año
-  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const meses = ['Xaneiro', 'Febreiro', 'Marzo', 'Abril', 'Maio', 'Xuño', 'Xullo', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Decembro'];
     
   // Generar etiquetas para el rango 2019-2025
   const labels = [];
@@ -154,7 +154,7 @@ function mountGraph() {
     labels: labels,
     datasets: [
       {
-        label: 'Ventas anteriores',
+        label: 'Vendas anteriores',
         data: props.ventasAnteriores,
         borderColor: '#5A6BFF',
         backgroundColor: 'rgba(90, 107, 255, 0.1)',
@@ -163,7 +163,7 @@ function mountGraph() {
         fill: true
       },
       {
-        label: 'Predicciones',
+        label: 'Predicións',
         data: props.prediccionMensual,
         borderColor: '#45FF9A',
         backgroundColor: 'rgba(69, 255, 154, 0.1)',
@@ -209,14 +209,14 @@ function mountYearlyGraph() {
     labels,
     datasets: [
       {
-        label: 'Ventas por Año',
+        label: 'Vendas por Ano',
         data,
         backgroundColor: 'rgba(90, 107, 255, 0.6)',
         borderColor: '#5A6BFF',
         borderWidth: 1
       },
       {
-        label: 'Predicción Anual Total',
+        label: 'Predición Anual Total',
         data: predictionBarsData,
         borderColor: '#45FF9A',
         backgroundColor: 'rgba(69, 255, 154, 0.1)',
@@ -246,27 +246,31 @@ mountGraph();
   <div class="main-content">
       <div class="dashboard-panel-row">
         <div class="dashboard-panel dashboard-panel-lg">
-          <div class="data-item">
-            <span class="data-label">Producto:</span>
-            <span class="data-value">{{ productoData }}</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Predicción Anual Total:</span>
-            <span class="data-value highlight">{{ prediccionAnualTotal }}</span>
+          <div>
+            <div class="data-item">
+              <span class="data-label">Produto:</span>
+              <span class="data-value">{{ productoData }}</span>
+            </div>
+            <div class="data-item">
+              <span class="data-label">Predición Anual Total:</span>
+              <span class="data-value highlight">{{ prediccionAnualTotal }} Unidades</span>
+            </div>
           </div>
 
-          <h3>Estadísticas de Predicción Anual</h3>
-          <div class="data-item">
-            <span class="data-label">TAPB:</span>
-            <span class="data-value highlight">{{ tapb.toFixed(2) }}%</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Tendencia Estimación:</span>
-            <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ capitalize(tendenciaEstimacion) }}</span>
-          </div>
-          <div class="data-item">
-            <span class="data-label">Confiabilidad:</span>
-            <span class="data-value highlight">{{ capitalize(confiabilidad) }}</span>
+          <div>
+            <h3>Estatísticas de Predición Anual</h3>
+            <div class="data-item">
+              <span class="data-label">APB:</span>
+              <span class="data-value highlight">{{ tapb.toFixed(2) }}%</span>
+            </div>
+            <div class="data-item">
+              <span class="data-label">Tendencia Estimación:</span>
+              <span :class="['data-value', tendenciaEstimacion === 'subestimación' ? 'trend-down' : 'trend-up']">{{ capitalize(tendenciaEstimacion) }}</span>
+            </div>
+            <div class="data-item">
+              <span class="data-label">Fiabilidade:</span>
+              <span class="data-value highlight">{{ capitalize(confiabilidad) }}</span>
+            </div>
           </div>
 
         </div>
@@ -289,25 +293,25 @@ mountGraph();
   margin-left: 0.5rem;
   height: 100%;
   justify-content: space-between;
+  height: 96vh;
 }
 
 .dashboard-panel-row {
   display: flex;
   gap: 1.2rem;
-  height: 38%;
+  height: 45%;
 }
 
 .dashboard-panel {
   /* Efecto glass y fondo */
-  background: rgba(40, 42, 65, 0.7);
+  background: var(--color-panel);
   border-radius: 18px;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18), 0 1.5px 8px 0 rgba(90,107,255,0.08);
   padding: 1.1rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--color-border);
 }
 
 .dashboard-panel-lg {
@@ -317,10 +321,9 @@ mountGraph();
 }
 
 .dashboard-panel-xl {
-  height: 48%;
+  height: 55%;
   flex: 1;
   width: 100%;
-  min-height: 0;
 }
 
 .data-item {
@@ -329,31 +332,42 @@ mountGraph();
   justify-content: space-between;
   align-items: center;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .data-label {
   font-size: 1rem;
-  color: #aaa;
+  color: var(--color-contrast-secondary);
   font-weight: 400;
 }
 
 .data-value {
   font-size: 1.1rem;
-  color: #fff;
   font-weight: 600;
 }
 
 .data-value.highlight {
-  color: #45FF9A; /* Color llamativo para valores importantes */
+  color: var(--color-accent-light-green); /* Color llamativo para valores importantes */
   font-size: 1.4rem;
 }
 
 .trend-up {
-  color: #45FF9A; /* Color verde para tendencia positiva */
+  color: var(--color-accent-light-green); /* Color verde para tendencia positiva */
 }
 
 .trend-down {
-  color: #FF6B6B; /* Color rojo para tendencia negativa */
+  color: var(--color-accent-red); /* Color rojo para tendencia negativa */
+}
+
+@media screen and (max-width: 1890px) {
+  .dashboard-panel-xl, .chart-container {
+    height: 45vh;
+  }
+  .dashboard-panel-row {
+    height: 25vh;
+  }
+  .dashboard-panel-lg {
+    height: 100%;
+  }
 }
 </style>
