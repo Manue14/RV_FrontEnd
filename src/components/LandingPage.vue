@@ -47,4 +47,13 @@
     .text-container > p {
         text-align: center;
     }
+
+    @media screen and (max-width: 1890px) {
+        .landing {
+            margin-top: 25%;
+        }
+        .logo {
+            width: 50vw;
+        }
+    }
 </style>

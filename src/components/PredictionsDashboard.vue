@@ -164,7 +164,7 @@ function mountGraph() {
       },
       {
         label: 'Predicións',
-        data: {"2025-02": 35, "2025-03": 73, "2025-04": 50, "2025-05": 51, "2025-06": 101, "2025-07": 77, "2025-08": 29, "2025-09": 60, "2025-10": 67, "2025-11": 56, "2025-12": 81, "2026-01": 135},
+        data: props.prediccionMensual,
         borderColor: '#45FF9A',
         backgroundColor: 'rgba(69, 255, 154, 0.1)',
         borderWidth: 2,
@@ -361,23 +361,13 @@ mountGraph();
 
 @media screen and (max-width: 1890px) {
   .dashboard-panel-xl, .chart-container {
-    height: 55vh;
+    height: 45vh;
   }
   .dashboard-panel-row {
     height: 25vh;
   }
   .dashboard-panel-lg {
     height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .dashboard-panel-lg > div {
-    width: 50%;
-  }
-  .dashboard-panel-lg > div:first-of-type {
-    height: fit-content;
-    margin-right: 1.5rem;
   }
 }
 </style>
