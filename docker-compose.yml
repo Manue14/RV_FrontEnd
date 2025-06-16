@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    image: rv_back
+    container_name: rv_backend
+    ports:
+      - "5000:5000"
+    networks:
+      - rv_network
+
+  frontend:
+    image: rv_front
+    container_name: rv_frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - rv_network
+
+networks:
+  rv_network:
+    driver: bridge
